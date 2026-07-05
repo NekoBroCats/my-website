@@ -18,7 +18,8 @@ export type WorkVisual =
   | "moodorgan"
   | "vr"
   | "unity"
-  | "cg";
+  | "cg"
+  | "site";
 
 export interface WorkDetailContent {
   overview: string;
@@ -66,6 +67,17 @@ export interface Work {
   imageDetail?: string;
   /** 詳細モーダルに表示する追加ギャラリー画像 */
   gallery?: { src: string; alt: string }[];
+  /** 面談で聞かれる前に答える基本情報。未入力の項目は表示されない */
+  meta?: {
+    /** 担当・役割(例: 企画・設計・実装(個人制作)) */
+    role?: string;
+    /** 制作時期・期間(例: 2025年 / 約3ヶ月) */
+    period?: string;
+    /** 形態(例: 大学授業課題 / 自主制作 / 展示出品) */
+    format?: string;
+  };
+  /** 一覧の先頭で大きく見せる代表作 */
+  featured?: boolean;
 }
 
 export type SkillLevel =

@@ -178,6 +178,30 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
           </div>
 
           <div className="p-5 md:p-6">
+            {/* 基本情報(役割・期間・形態)。未入力の項目は表示しない */}
+            {work.meta && (work.meta.role || work.meta.period || work.meta.format) && (
+              <div className="mb-8 flex flex-wrap gap-x-8 gap-y-2 border-y border-(--line) py-3">
+                {work.meta.role && (
+                  <div>
+                    <p className="spec-label">Role</p>
+                    <p className="text-sm text-(--ink-soft)">{work.meta.role}</p>
+                  </div>
+                )}
+                {work.meta.period && (
+                  <div>
+                    <p className="spec-label">Period</p>
+                    <p className="text-sm text-(--ink-soft)">{work.meta.period}</p>
+                  </div>
+                )}
+                {work.meta.format && (
+                  <div>
+                    <p className="spec-label">Format</p>
+                    <p className="text-sm text-(--ink-soft)">{work.meta.format}</p>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* 視点別の読み解き */}
             <div className="mb-8 border-l-2 border-(--ink) bg-(--gray-1) p-4" aria-live="polite">
               <p className="spec-label mb-1.5">{LENS_LABELS[lens]}</p>

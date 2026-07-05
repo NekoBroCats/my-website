@@ -20,6 +20,8 @@ export function WorkVisualArt({ visual }: { visual: WorkVisual }) {
       return <UnityArt />;
     case "cg":
       return <CgArt />;
+    case "site":
+      return <SiteArt />;
   }
 }
 
@@ -243,6 +245,49 @@ function CgArt() {
       </g>
       <text x="24" y="220" fontSize="10" letterSpacing="3" fill="#8d8d8a" fontFamily="Inter, sans-serif">
         PRODUCT STUDY
+      </text>
+    </svg>
+  );
+}
+
+/* このサイト自体: ブラウザ枠の中のアイソメトリックなボクセルと方向矢印 */
+function SiteArt() {
+  const cube = (x: number, y: number, tone: string, s = 22) => {
+    const hw = s;
+    const hh = s * 0.5;
+    const d = s * 0.55;
+    return (
+      <g key={`${x}-${y}-${tone}`} transform={`translate(${x} ${y})`}>
+        <polygon points={`0,${-hh} ${hw},0 0,${hh} ${-hw},0`} fill={tone} stroke="#111113" strokeWidth="1" />
+        <polygon points={`${-hw},0 0,${hh} 0,${hh + d} ${-hw},${d}`} fill={tone} opacity="0.75" stroke="#111113" strokeWidth="1" />
+        <polygon points={`${hw},0 0,${hh} 0,${hh + d} ${hw},${d}`} fill={tone} opacity="0.55" stroke="#111113" strokeWidth="1" />
+      </g>
+    );
+  };
+  return (
+    <svg {...svgProps}>
+      {/* ブラウザウィンドウの枠 */}
+      <rect x="40" y="24" width="320" height="176" rx="10" fill="none" stroke="#111113" strokeWidth="1.5" />
+      <line x1="40" y1="52" x2="360" y2="52" stroke="#c9c9c6" strokeWidth="1" />
+      <circle cx="58" cy="38" r="4" fill="none" stroke="#111113" strokeWidth="1.2" />
+      <circle cx="74" cy="38" r="4" fill="none" stroke="#111113" strokeWidth="1.2" />
+      <circle cx="90" cy="38" r="4" fill="none" stroke="#111113" strokeWidth="1.2" />
+
+      {/* アイソメトリックなボクセル群 */}
+      {cube(160, 120, "#fdfdfc")}
+      {cube(200, 138, "#111113")}
+      {cube(160, 156, "#8d8d8a")}
+
+      {/* 方向キー(↓←↑→ を思わせる矢印) */}
+      <g stroke="#111113" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M 280 100 L 280 116 M 274 110 L 280 116 L 286 110" />
+        <path d="M 300 130 L 284 130 M 290 124 L 284 130 L 290 136" />
+        <path d="M 280 160 L 280 144 M 274 150 L 280 144 L 286 150" />
+        <path d="M 320 130 L 336 130 M 330 124 L 336 130 L 330 136" />
+      </g>
+
+      <text x="24" y="228" fontSize="10" letterSpacing="3" fill="#8d8d8a" fontFamily="Inter, sans-serif">
+        SITE AS ARTIFACT
       </text>
     </svg>
   );

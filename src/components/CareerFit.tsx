@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { SectionHeader } from "./SectionHeader";
 import { career } from "../data/career";
 import { profile } from "../data/profile";
@@ -26,9 +27,9 @@ export function CareerFit() {
             <a href={`mailto:${profile.email}`} className="btn btn-solid">
               連絡する
             </a>
-            <a href="#works" className="btn btn-ghost">
+            <Link to="/works" className="btn btn-ghost">
               作品で確認する
-            </a>
+            </Link>
           </div>
         </div>
 

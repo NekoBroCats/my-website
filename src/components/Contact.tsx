@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { profile } from "../data/profile";
 import { useReveal } from "../hooks/useReveal";
 
@@ -66,9 +67,9 @@ export function Contact() {
 
         <footer className="mt-16 flex flex-wrap items-center justify-between gap-3 border-t border-(--gray-5) pt-6 text-xs text-(--gray-4)">
           <p className="en tracking-wider">© {new Date().getFullYear()} {profile.nameEn} — Perception as Interface</p>
-          <a href="#top" className="underline underline-offset-4 hover:text-(--paper)">
+          <Link to="/" className="underline underline-offset-4 hover:text-(--paper)">
             ページの先頭へ ↑
-          </a>
+          </Link>
         </footer>
       </div>
     </section>

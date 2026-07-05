@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { SectionHeader } from "./SectionHeader";
 import { skillCategories } from "../data/skills";
 import { works } from "../data/works";
@@ -5,18 +6,15 @@ import { SKILL_LEVEL_LABELS } from "../types";
 import { useReveal } from "../hooks/useReveal";
 import { haptic } from "../lib/haptics";
 
-/** スキルをクリックすると、それを使った作品カードへスクロールする */
-function jumpToWork(workId: string) {
-  haptic(8);
-  const el = document.getElementById(`work-${workId}`);
-  if (el) {
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-    el.classList.add("is-visible");
-  }
-}
-
 export function SkillMap() {
   const ref = useReveal<HTMLDivElement>();
+  const navigate = useNavigate();
+
+  /** スキルをクリックすると、それを使った作品カードへ /works ページ経由で移動する */
+  function jumpToWork(workId: string) {
+    haptic(8);
+    navigate(`/works#work-${workId}`);
+  }
 
   return (
     <section id="skills" className="container-site" style={{ paddingBlock: "var(--section-gap)" }}>

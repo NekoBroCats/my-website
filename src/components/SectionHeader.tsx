@@ -12,14 +12,14 @@ export function SectionHeader({ index, en, ja, quickSummary }: SectionHeaderProp
   const ref = useReveal<HTMLDivElement>();
   return (
     <div ref={ref} className="reveal mb-12 md:mb-16">
-      <div className="flex items-baseline gap-4 border-b border-(--line) pb-4">
+      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2 border-b border-(--line) pb-4">
         <span className="spec-label">{index}</span>
-        <h2 className="text-2xl font-bold tracking-wide md:text-3xl">{ja}</h2>
+        <h2 className="text-2xl font-bold md:text-3xl">{ja}</h2>
         <span className="en hidden text-xs text-(--gray-4) uppercase sm:inline">{en}</span>
       </div>
       {quickSummary && (
-        <p className="mt-4 border-l-2 border-(--ink) pl-4 text-sm leading-relaxed text-(--ink-soft)">
-          <span className="spec-label mr-2">3s</span>
+        <p className="mt-4 max-w-3xl border-l-2 border-(--ink) pl-4 text-sm leading-relaxed text-(--ink-soft)">
+          <span className="spec-label mr-2 align-baseline">3s</span>
           {quickSummary}
         </p>
       )}

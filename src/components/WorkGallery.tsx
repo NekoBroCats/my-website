@@ -47,10 +47,10 @@ export function WorkGallery({ images }: WorkGalleryProps) {
                 haptic(6);
                 setActive(i);
               }}
-              className={`h-14 w-20 shrink-0 overflow-hidden border transition-colors ${
+              className={`h-14 w-20 shrink-0 overflow-hidden border transition-[opacity,border-color,transform] duration-300 ${
                 i === active
                   ? "border-(--ink)"
-                  : "border-(--line) opacity-60 hover:opacity-100"
+                  : "border-(--line) opacity-60 hover:-translate-y-0.5 hover:opacity-100"
               }`}
             >
               <img

@@ -29,7 +29,13 @@
   --font-en: "Inter", system-ui, sans-serif;
   --font-serif: "Shippori Mincho", serif;
 
-  /* spacing rhythm */
+  /* spacing rhythm: 8pt scale */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-6: 3rem;
+  --space-8: 4rem;
   --section-gap: clamp(6rem, 12vw, 10rem);
   --container-max: 72rem;
 }
@@ -43,9 +49,10 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
+  overflow-x: hidden;
 }
 
-/* ユーザー指示によりOSのprefers-reduced-motion設定は無視し、常にアニメーションを有効化する */
+/* OSのprefers-reduced-motionを尊重し、動きの意味だけ残す */
 
 body {
   background: var(--paper);
@@ -55,6 +62,7 @@ body {
   line-height: 1.9;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 ::selection {
@@ -88,7 +96,7 @@ a {
   width: 100%;
   max-width: var(--container-max);
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  padding-inline: clamp(var(--space-2), 4vw, 2.5rem);
 }
 
 .en {
@@ -105,7 +113,7 @@ a {
 .caption-box {
   border: 1px solid var(--line);
   background: var(--paper);
-  padding: 1.25rem 1.5rem;
+  padding: var(--space-2) var(--space-3);
 }
 
 .hairline {
@@ -127,13 +135,19 @@ a {
   text-underline-offset: 0.32em;
 }
 
+.text-anywhere {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
 /* ---------- Reveal on scroll ---------- */
 .reveal {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(20px);
   transition:
-    opacity 0.7s var(--ease),
-    transform 0.7s var(--ease);
+    opacity 0.55s var(--ease),
+    transform 0.55s var(--ease);
+  transition-delay: calc(var(--reveal-index, 0) * 55ms);
 }
 
 .reveal.is-visible {
@@ -147,6 +161,45 @@ a {
   overflow: hidden;
   background: var(--gray-1);
   border-bottom: 1px solid var(--line);
+}
+
+.work-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.work-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.35s var(--ease),
+    transform 0.35s var(--ease);
+}
+
+.work-card:hover::after,
+.work-card:focus-within::after {
+  opacity: 1;
+  transform: translate(0.35rem, 0.35rem);
+  border-color: var(--line);
+}
+
+.media-reveal {
+  filter: saturate(0.84) contrast(1.02);
+  transform: scale(1.001);
+  transition:
+    filter 0.45s var(--ease),
+    transform 0.55s var(--ease);
+}
+
+.group:hover .media-reveal,
+.group:focus-within .media-reveal {
+  filter: saturate(1) contrast(1.04);
+  transform: scale(1.025);
 }
 
 /* ---------- Modal ---------- */
@@ -170,6 +223,11 @@ a {
 
 .modal-panel > * {
   pointer-events: auto;
+}
+
+.modal-enter {
+  animation: modal-enter 0.32s var(--ease) both;
+  transform-origin: 50% 100%;
 }
 
 @media (min-width: 768px) {
@@ -264,4 +322,34 @@ a {
     y 0.5s var(--ease),
     fill 0.5s var(--ease),
     opacity 0.4s var(--ease);
+}
+
+@keyframes modal-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .reveal {
+    transform: none;
+  }
 }

@@ -19,18 +19,18 @@ export function WorksSection() {
           index="02"
           en="Works / Case Studies"
           ja="作品"
-          quickSummary="全部を同じ粒度では説明していません。気になった作品から、作っている途中の引っかかりごと読めるようにしています。"
+          quickSummary="まずVOXEL ROW / YONもく。ほかの作品も、迷ったところや試したところから読めるようにしています。"
         />
 
         {featuredWork && (
           <div className="mb-6">
-            <WorkCard work={featuredWork} onOpen={setOpenWork} featured />
+            <WorkCard work={featuredWork} onOpen={setOpenWork} featured order={0} />
           </div>
         )}
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {restWorks.map((work) => (
-            <WorkCard key={work.id} work={work} onOpen={setOpenWork} />
+          {restWorks.map((work, i) => (
+            <WorkCard key={work.id} work={work} onOpen={setOpenWork} order={i + 1} />
           ))}
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { CSSProperties } from "react";
 import type { Work } from "../types";
 import { WorkMedia } from "./WorkMedia";
 import { useViewMode } from "../context/ViewModeContext";
@@ -11,15 +12,18 @@ interface WorkCardProps {
   onOpen: (work: Work) => void;
   /** 一覧の先頭で大きく見せる代表作カード(横型レイアウト) */
   featured?: boolean;
+  /** グリッド内の入場順。スクロール時にわずかなstaggerを付ける */
+  order?: number;
 }
 
-export function WorkCard({ work, onOpen, featured = false }: WorkCardProps) {
+export function WorkCard({ work, onOpen, featured = false, order = 0 }: WorkCardProps) {
   const { mode } = useViewMode();
   // ハッシュジャンプ(/works#work-{id})の着地先カードは、reveal待ちにせず最初から表示する。
   // マウント時に一度だけ判定し、後のハッシュ変化で表示が消えないよう固定する
   const [isHashTarget] = useState(() => hashTargetId(window.location.hash) === `work-${work.id}`);
   const ref = useReveal<HTMLElement>(isHashTarget);
   const revealClass = isHashTarget ? "reveal is-visible" : "reveal";
+  const revealStyle = { "--reveal-index": Math.min(order, 8) } as CSSProperties;
 
   const openWork = () => {
     haptic(8);
@@ -61,7 +65,8 @@ export function WorkCard({ work, onOpen, featured = false }: WorkCardProps) {
       <article
         ref={ref}
         id={`work-${work.id}`}
-        className={`${revealClass} group scroll-mt-24 border border-(--line-strong) bg-(--paper) transition-[box-shadow,transform,border-color] duration-300 hover:-translate-y-0.5 hover:shadow-[0_2px_24px_rgba(17,17,19,0.08)] focus-within:border-(--ink) md:flex`}
+        style={revealStyle}
+        className={`${revealClass} work-card group scroll-mt-24 border border-(--line-strong) bg-(--paper) transition-[box-shadow,transform,border-color] duration-300 hover:-translate-y-0.5 hover:shadow-[0_2px_24px_rgba(17,17,19,0.08)] focus-within:border-(--ink) md:flex`}
       >
         {/* ビジュアル(実写画像。未配置の作品はSVGビジュアルで成立) */}
         <div className="work-visual aspect-5/3 md:aspect-auto md:w-1/2 md:border-b-0 md:border-r md:border-(--line)">
@@ -107,7 +112,8 @@ export function WorkCard({ work, onOpen, featured = false }: WorkCardProps) {
     <article
       ref={ref}
       id={`work-${work.id}`}
-      className={`${revealClass} group flex scroll-mt-24 flex-col border border-(--line) bg-(--paper) transition-[box-shadow,transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-(--line-strong) hover:shadow-[0_2px_24px_rgba(17,17,19,0.08)] focus-within:border-(--ink)`}
+      style={revealStyle}
+      className={`${revealClass} work-card group flex scroll-mt-24 flex-col border border-(--line) bg-(--paper) transition-[box-shadow,transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-(--line-strong) hover:shadow-[0_2px_24px_rgba(17,17,19,0.08)] focus-within:border-(--ink)`}
     >
       {/* ビジュアル(実写画像。未配置の作品はSVGビジュアルで成立) */}
       <div className="work-visual aspect-5/3">

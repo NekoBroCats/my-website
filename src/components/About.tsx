@@ -14,7 +14,7 @@ export function About() {
         index="01"
         en="About / Statement"
         ja="考えていること"
-        quickSummary="白黒で割り切れないところ、見方を少し変えたら急に崩れるところを、作品の入口にしています。"
+        quickSummary="盤面を回す。同じ色が違って見える。そういう小さいズレから作り始めます。"
       />
 
       <div ref={ref} className="reveal grid gap-10 lg:grid-cols-[1fr_2fr]">
@@ -35,22 +35,20 @@ export function About() {
           <p className="serif text-3xl leading-snug font-semibold md:text-4xl">
             {profile.statement.lead}
           </p>
-          <ul className="mt-8 flex flex-wrap gap-2" aria-label="制作プロセスのキーワード">
+          <ul className="mt-8 grid grid-cols-2 border-y border-(--line) text-sm md:grid-cols-4" aria-label="制作プロセスのキーワード">
             {profile.statement.keywords.map((kw, i) => (
-              <li key={kw} className="flex items-center gap-2 text-sm text-(--gray-5)">
+              <li
+                key={kw}
+                className="flex min-h-12 items-center gap-2 border-(--line) py-2 pr-3 text-(--gray-5) odd:border-r md:border-r md:last:border-r-0"
+              >
                 <span
-                  className="inline-block size-2.5"
+                  className="inline-block size-2.5 shrink-0"
                   style={{
                     background: `rgb(${30 + i * 38},${30 + i * 38},${30 + i * 38})`,
                   }}
                   aria-hidden="true"
                 />
                 {kw}
-                {i < profile.statement.keywords.length - 1 && (
-                  <span aria-hidden="true" className="text-(--gray-3)">
-                    →
-                  </span>
-                )}
               </li>
             ))}
           </ul>

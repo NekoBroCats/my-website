@@ -63,7 +63,7 @@ function rotateAroundAxis(v: THREE.Vector3, axis: THREE.Vector3, angle: number):
 function buildGrid(isMobile: boolean): { cols: number; rows: number; cubes: CubeData[] } {
   const cols = isMobile ? 11 : 20;
   const rows = isMobile ? 16 : 13;
-  const density = isMobile ? 0.22 : 0.35;
+  const density = isMobile ? 0.24 : 0.42;
   const cubes: CubeData[] = [];
   let id = 0;
   for (let j = 0; j < rows; j++) {
@@ -71,7 +71,7 @@ function buildGrid(isMobile: boolean): { cols: number; rows: number; cubes: Cube
       const r = rand(i, j);
       if (r >= density) continue;
       const r2 = rand(j * 31 + 7, i * 17 + 3);
-      const base: 0 | 1 = r2 > 0.88 ? 1 : 0;
+      const base: 0 | 1 = r2 > 0.82 ? 1 : 0;
       cubes.push({ id: id++, i, j, base });
     }
   }
@@ -131,7 +131,7 @@ function resolveRoll(
   return stepsMap;
 }
 
-const CUBE_COLOR_WHITE = new THREE.Color("#fafafa");
+const CUBE_COLOR_WHITE = new THREE.Color("#eeeeea");
 const CUBE_COLOR_BLACK = new THREE.Color("#1a1a1e");
 const CUBE_COLOR_GRAY = new THREE.Color("#8d8d8a");
 
@@ -187,7 +187,7 @@ function Scene({ cubes, cols, rows, reduced, isMobile, rollRequestRef }: ScenePr
       new THREE.LineBasicMaterial({
         color: "#111113",
         transparent: true,
-        opacity: 0.18,
+        opacity: 0.3,
       }),
     [],
   );
@@ -437,7 +437,7 @@ function Scene({ cubes, cols, rows, reduced, isMobile, rollRequestRef }: ScenePr
         onPointerLeave={handlePointerLeave}
       >
         <planeGeometry args={[Math.max(cols, rows) * 3, Math.max(cols, rows) * 3]} />
-        <shadowMaterial opacity={0.08} transparent />
+        <shadowMaterial opacity={0.12} transparent />
       </mesh>
       {cubes.map((c) => (
         <mesh

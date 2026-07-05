@@ -19,15 +19,18 @@ export function HomePage() {
 
   return (
     <section id="top" className="relative flex min-h-svh flex-col justify-end overflow-hidden">
-      {/* 背景: カーソル/クリックに反応するボクセルフィールド(文字の可読性を優先し10%減光) */}
+      {/* 背景: カーソル/クリックに反応するボクセルフィールド。読ませつつ、作品の気配は消しすぎない。 */}
       <div className="absolute inset-0" aria-hidden="true">
-        <div className="absolute inset-0 opacity-90">
+        <div className="pointer-events-none absolute inset-0 opacity-45 md:opacity-55">
+          <VoxelField />
+        </div>
+        <div className="absolute inset-0 opacity-100">
           <Suspense fallback={<VoxelField />}>
             <VoxelScene3D rollRef={rollRef} />
           </Suspense>
         </div>
         {/* テキスト可読性のためのグラデーション(canvasへのクリックを妨げないようpointer-events無効) */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-(--paper) via-(--paper)/70 to-(--paper)/30" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-(--paper) via-(--paper)/60 to-(--paper)/10" />
       </div>
 
       <div className="container-site relative pt-28 pb-16 md:pb-20">
@@ -79,27 +82,27 @@ export function HomePage() {
           >
             →
           </button>
-          <span className="text-xs text-(--gray-4)">背景をクリックしても転がります</span>
+          <span className="hidden text-xs text-(--gray-4) sm:inline">背景をクリックしても転がります</span>
         </div>
 
         {/* 短く読むモード用の即読サマリー */}
         {mode === "quick" && (
-          <dl className="caption-box mt-10 grid max-w-3xl gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
-            <div>
+          <dl className="caption-box mt-10 grid max-w-3xl overflow-hidden gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
+            <div className="min-w-0">
               <dt className="spec-label mb-1.5">Who</dt>
-              <dd className="leading-relaxed">{profile.quickScan.person}</dd>
+              <dd className="text-anywhere leading-relaxed">{profile.quickScan.person}</dd>
             </div>
-            <div>
+            <div className="min-w-0">
               <dt className="spec-label mb-1.5">Representative Works</dt>
-              <dd className="leading-relaxed">{profile.quickScan.representative}</dd>
+              <dd className="text-anywhere leading-relaxed">{profile.quickScan.representative}</dd>
             </div>
-            <div>
+            <div className="min-w-0">
               <dt className="spec-label mb-1.5">Tech</dt>
-              <dd className="leading-relaxed">{profile.quickScan.tech}</dd>
+              <dd className="text-anywhere leading-relaxed">{profile.quickScan.tech}</dd>
             </div>
-            <div>
+            <div className="min-w-0">
               <dt className="spec-label mb-1.5">Target Fields</dt>
-              <dd className="leading-relaxed">{profile.quickScan.target}</dd>
+              <dd className="text-anywhere leading-relaxed">{profile.quickScan.target}</dd>
             </div>
           </dl>
         )}

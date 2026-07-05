@@ -13,12 +13,12 @@ export function CareerFit() {
         index="05"
         en="Career Fit / What I Can Do"
         ja="仕事での活かし方"
-        quickSummary="企画だけで終わらせず、かといって実装だけにも寄せず、まず一回試せる形まで持っていくのが得意です。"
+        quickSummary="まだふわっとした話を、紙、模型、Unityのどれかで一回試せるところまで持っていきます。"
       />
 
       <div ref={ref} className="reveal space-y-10">
         {/* 面談前に先に読める短いまとめ */}
-        <div className="border-2 border-(--ink) p-6 md:p-8">
+        <div className="border border-(--line-strong) bg-(--gray-1) p-6 md:p-8">
           <p className="spec-label mb-3">Short Note</p>
           <p className="max-w-3xl text-base leading-loose font-medium md:text-lg">
             {career.hiringSummary}
@@ -44,7 +44,7 @@ export function CareerFit() {
               {career.fields.map((field) => (
                 <li
                   key={field}
-                  className="border border-(--line-strong) px-3 py-1.5 text-sm"
+                  className="border border-(--line-strong) bg-(--paper) px-3 py-1.5 text-sm"
                 >
                   {field}
                 </li>
@@ -60,7 +60,7 @@ export function CareerFit() {
             </h3>
             <ul className="grid gap-px overflow-hidden border border-(--line) bg-(--line) sm:grid-cols-2">
               {career.roles.map((role, i) => (
-                <li key={role.title} className="bg-(--paper) p-4">
+                <li key={role.title} className="bg-(--paper) p-4 transition-colors hover:bg-(--gray-1)">
                   <p className="spec-label mb-1.5">{String(i + 1).padStart(2, "0")}</p>
                   <p className="text-sm font-bold leading-relaxed">{role.title}</p>
                   <p className="mt-1.5 text-xs leading-relaxed text-(--gray-5)">{role.detail}</p>

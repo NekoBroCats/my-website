@@ -13,12 +13,12 @@ export function Contact() {
           <div className="grid gap-10 md:grid-cols-2">
             <div>
               <p className="serif max-w-lg text-2xl leading-relaxed md:text-3xl">
-                まだ言葉にしきれていない問いでも、
+                言葉になる前の思いを
                 <br className="hidden sm:block" />
-                試作の話ならできます。
+                カタチに。
               </p>
               <p className="mt-4 max-w-md text-sm leading-loose text-(--gray-3)">
-                作品の細かい話、実物プロトタイプの見せ方、VRChat / Unityまわりで何をしたかなど、必要なところから話せます。面談の前に見たい資料があれば用意します。
+                作品の細かい話。実物プロトタイプの見せ方。VRChat / Unityで何を試したか。必要なところから話せます。
               </p>
               <a
                 href={`mailto:${profile.email}`}
@@ -40,7 +40,7 @@ export function Contact() {
                 <p className="spec-label mb-1.5">Email</p>
                 <a
                   href={`mailto:${profile.email}`}
-                  className="en nav-link text-base break-all underline decoration-(--gray-4) underline-offset-4 transition-colors hover:decoration-(--paper)"
+                  className="en nav-link text-anywhere text-base underline decoration-(--gray-4) underline-offset-4 transition-colors hover:decoration-(--paper)"
                 >
                   {profile.email}
                 </a>
@@ -72,7 +72,7 @@ export function Contact() {
           </div>
         </div>
 
-        <footer className="mt-16 flex flex-wrap items-center justify-between gap-3 border-t border-(--gray-5) pt-6 text-xs text-(--gray-4)">
+        <footer className="mt-16 flex flex-wrap items-center justify-between gap-3 border-t border-(--gray-5) bg-[rgba(253,253,252,0.04)] px-4 py-5 text-xs text-(--gray-4)">
           <p className="en tracking-wider">© {new Date().getFullYear()} {profile.nameEn} — Perception as Interface</p>
           <Link to="/" className="nav-link underline underline-offset-4 hover:text-(--paper)">
             ページの先頭へ ↑

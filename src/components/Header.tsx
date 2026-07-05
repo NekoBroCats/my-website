@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { LensToggle } from "./LensToggle";
 import { profile } from "../data/profile";
 import { haptic } from "../lib/haptics";
+import { useBodyScrollLock } from "../hooks/useBodyScrollLock";
 
 const navItems = [
   { to: "/about", label: "About" },
@@ -21,19 +22,21 @@ function navLinkClass({ isActive }: { isActive: boolean }) {
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuCloseRef = useRef<HTMLButtonElement>(null);
+  useBodyScrollLock(menuOpen);
 
   // メニューが開いている間はbodyスクロールをロックし、Escで閉じる
   useEffect(() => {
     if (!menuOpen) return;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    menuCloseRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setMenuOpen(false);
     };
     document.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = prevOverflow;
       document.removeEventListener("keydown", onKey);
+      previouslyFocused?.focus();
     };
   }, [menuOpen]);
 
@@ -105,7 +108,17 @@ export function Header() {
           fixedオーバーレイはheaderの外(兄弟要素)に置いてビューポート基準で全画面化する */}
       {menuOpen && (
         <div id="mobile-navigation" className="fixed inset-0 top-14 z-40 flex flex-col bg-(--paper) md:hidden">
-          <nav aria-label="モバイルナビゲーション" className="flex flex-1 flex-col justify-center px-8">
+          <div className="container-site flex justify-end pt-5">
+            <button
+              ref={menuCloseRef}
+              type="button"
+              onClick={closeMenu}
+              className="btn btn-ghost h-9 px-3 py-1.5 text-sm"
+            >
+              閉じる
+            </button>
+          </div>
+          <nav aria-label="モバイルナビゲーション" className="flex flex-1 flex-col justify-center px-8 pb-14">
             <ul className="space-y-6">
               {navItems.map((item) => (
                 <li key={item.to}>

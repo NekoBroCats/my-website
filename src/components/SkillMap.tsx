@@ -22,25 +22,25 @@ export function SkillMap() {
         index="03"
         en="Skills / Tools"
         ja="スキル"
-        quickSummary="資格や肩書きというより、作っている途中でよく使う手つきです。考える、作る、また考える、を行き来しています。"
+        quickSummary="紙に書く。形にする。Unityで動かす。また紙に戻る。作っている途中でよく行き来する道具です。"
       />
 
       <div ref={ref} className="reveal grid gap-px overflow-hidden border border-(--line) bg-(--line) md:grid-cols-2">
         {skillCategories.map((cat) => (
           <div key={cat.id} className="bg-(--paper) p-5 md:p-6">
-            <div className="mb-2 flex items-baseline gap-3">
+            <div className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <h3 className="text-lg font-bold">{cat.title}</h3>
               <span className="en text-xs text-(--gray-4) uppercase">{cat.titleEn}</span>
             </div>
-            <p className="mb-4 text-xs leading-relaxed text-(--gray-5)">{cat.description}</p>
-            <ul className="space-y-1.5">
+            <p className="mb-5 max-w-md text-xs leading-relaxed text-(--gray-5)">{cat.description}</p>
+            <ul className="divide-y divide-(--line)">
               {cat.skills.map((skill) => {
                 const related = skill.relatedWorkIds
                   .map((id) => works.find((w) => w.id === id))
                   .filter((w) => w !== undefined);
                 const clickable = related.length > 0;
                 return (
-                  <li key={skill.name} className="flex items-center justify-between gap-3 text-sm">
+                  <li key={skill.name} className="flex min-h-11 items-center justify-between gap-3 py-2 text-sm">
                     {clickable ? (
                       <button
                         type="button"
@@ -59,7 +59,7 @@ export function SkillMap() {
                     ) : (
                       <span>{skill.name}</span>
                     )}
-                    <span className="en shrink-0 rounded-full border border-(--line) px-2.5 py-0.5 text-[0.675rem] text-(--gray-5)">
+                    <span className="en shrink-0 border border-(--line) bg-(--gray-1) px-2.5 py-0.5 text-[0.675rem] text-(--gray-5)">
                       {SKILL_LEVEL_LABELS[skill.level]}
                     </span>
                   </li>
@@ -70,7 +70,7 @@ export function SkillMap() {
         ))}
       </div>
 
-      <p className="mt-4 text-xs text-(--gray-4)">
+      <p className="mt-4 text-xs leading-relaxed text-(--gray-4)">
         ラベルは自己申告のメモです。↗ が付いたものは、実際に使った作品まで飛べます。
       </p>
     </section>

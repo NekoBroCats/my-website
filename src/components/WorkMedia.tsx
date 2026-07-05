@@ -22,14 +22,17 @@ export function WorkMedia({ work, variant }: WorkMediaProps) {
   if (variant === "card") {
     if (!src || failed) return <WorkVisualArt visual={work.visual} />;
     return (
-      <img
-        src={assetUrl(src)}
-        alt={alt}
-        loading="lazy"
-        decoding="async"
-        className="absolute inset-0 h-full w-full object-cover"
-        onError={() => setFailed(true)}
-      />
+      <>
+        <WorkVisualArt visual={work.visual} />
+        <img
+          src={assetUrl(src)}
+          alt={alt}
+          loading="eager"
+          decoding="async"
+          className="media-reveal absolute inset-0 h-full w-full object-cover"
+          onError={() => setFailed(true)}
+        />
+      </>
     );
   }
 

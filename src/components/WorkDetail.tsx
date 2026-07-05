@@ -6,6 +6,7 @@ import { WorkGallery } from "./WorkGallery";
 import { GravityBoard } from "./GravityBoard";
 import { IllusionDemo } from "./IllusionDemo";
 import { haptic } from "../lib/haptics";
+import { useBodyScrollLock } from "../hooks/useBodyScrollLock";
 
 interface WorkDetailProps {
   work: Work;
@@ -13,9 +14,24 @@ interface WorkDetailProps {
 }
 
 const lensKeys: LensKey[] = ["thought", "tech", "recruiter"];
+const focusableSelector = [
+  "a[href]",
+  "button:not([disabled])",
+  "textarea:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  '[tabindex]:not([tabindex="-1"])',
+].join(",");
+
+function getFocusableElements(root: HTMLElement) {
+  return Array.from(root.querySelectorAll<HTMLElement>(focusableSelector)).filter((el) => {
+    if (el.hasAttribute("disabled") || el.getAttribute("aria-hidden") === "true") return false;
+    const style = window.getComputedStyle(el);
+    return style.display !== "none" && style.visibility !== "hidden";
+  });
+}
 
 /**
- * 作品詳細モーダル。
  * 作品詳細モーダル。
  * 本人が制作を振り返る文章として読めるよう、見出しも説明調に寄せすぎない。
  */
@@ -23,13 +39,12 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
   const [lens, setLens] = useState<LensKey>("thought");
   const closeRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  useBodyScrollLock(true);
 
-  // フォーカス移動・Escで閉じる・背景スクロールのロック
+  // フォーカス移動・Escで閉じる
   useEffect(() => {
     const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     closeRef.current?.focus();
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -37,25 +52,34 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
         onClose();
       }
       if (e.key === "Tab" && panelRef.current) {
-        const focusables = panelRef.current.querySelectorAll<HTMLElement>(
-          'button, a[href], [tabindex]:not([tabindex="-1"])',
-        );
+        const focusables = getFocusableElements(panelRef.current);
         if (focusables.length === 0) return;
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
+        const active = document.activeElement;
+        if (!active || !panelRef.current.contains(active)) {
+          e.preventDefault();
+          first.focus();
+        } else if (e.shiftKey && active === first) {
           e.preventDefault();
           last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
+        } else if (!e.shiftKey && active === last) {
           e.preventDefault();
           first.focus();
         }
       }
     };
+    const onFocusIn = (e: FocusEvent) => {
+      if (!panelRef.current) return;
+      if (e.target instanceof Node && panelRef.current.contains(e.target)) return;
+      const first = getFocusableElements(panelRef.current)[0];
+      (first ?? panelRef.current).focus();
+    };
     document.addEventListener("keydown", onKey);
+    document.addEventListener("focusin", onFocusIn);
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prevOverflow;
+      document.removeEventListener("focusin", onFocusIn);
       previouslyFocused?.focus();
     };
   }, [onClose]);
@@ -118,17 +142,18 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
           aria-modal="true"
           aria-labelledby="work-detail-title"
           aria-describedby="work-detail-summary"
-          className="max-h-[92svh] w-full max-w-3xl overflow-y-auto border border-(--line-strong) bg-(--paper) md:max-h-[86svh]"
+          tabIndex={-1}
+          className="modal-enter max-h-[92svh] w-full max-w-4xl overflow-y-auto border border-(--line-strong) bg-(--paper) md:max-h-[86svh]"
         >
           {/* ヘッダー */}
           <div className="sticky top-0 z-10 border-b border-(--line) bg-(--paper)/95 backdrop-blur-sm">
-            <div className="flex items-start justify-between gap-4 p-5 pb-3 md:p-6 md:pb-3">
-              <div>
+            <div className="grid gap-4 p-5 pb-3 md:grid-cols-[1fr_auto] md:items-start md:p-6 md:pb-3">
+              <div className="min-w-0">
                 <p className="spec-label mb-1.5">{work.category}</p>
-                <h3 id="work-detail-title" className="text-2xl font-bold tracking-wide">
+                <h3 id="work-detail-title" className="text-2xl font-bold tracking-wide break-words">
                   {work.title}
                   {work.titleEn && (
-                    <span className="en ml-2 text-sm font-normal text-(--gray-4)">
+                    <span className="en ml-2 inline-block text-sm font-normal text-(--gray-4)">
                       {work.titleEn}
                     </span>
                   )}
@@ -145,7 +170,7 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
                   onClose();
                 }}
                 aria-label="詳細を閉じる"
-                className="btn btn-ghost shrink-0 px-3 py-1.5"
+                className="btn btn-ghost h-9 shrink-0 justify-self-start px-3 py-1.5 md:justify-self-end"
               >
                 閉じる
               </button>
@@ -153,7 +178,7 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
 
             {/* Perspective switch: 同じ作品を3つの視点で読み替える */}
             <div className="px-5 pb-3 md:px-6" role="tablist" aria-label="作品を読む視点">
-              <div className="inline-flex border border-(--line-strong) text-xs">
+              <div className="inline-flex max-w-full flex-wrap border border-(--line-strong) text-xs">
                 {lensKeys.map((key) => (
                   <button
                     key={key}
@@ -164,7 +189,7 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
                       haptic(6);
                       setLens(key);
                     }}
-                    className={`px-3.5 py-1.5 transition-colors ${
+                    className={`min-h-8 shrink-0 px-3.5 py-1.5 transition-colors ${
                       lens === key
                         ? "bg-(--ink) text-(--paper)"
                         : "text-(--gray-5) hover:text-(--ink)"
@@ -203,7 +228,7 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
             )}
 
             {/* 視点別の読み解き */}
-            <div className="mb-8 border-l-2 border-(--ink) bg-(--gray-1) p-4" aria-live="polite">
+            <div className="mb-8 max-w-3xl border-l-2 border-(--ink) bg-(--gray-1) p-4 md:p-5" aria-live="polite">
               <p className="spec-label mb-1.5">{LENS_LABELS[lens]}</p>
               <p className="text-sm leading-relaxed text-(--ink-soft)">{work.lenses[lens]}</p>
             </div>
@@ -232,12 +257,12 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
             {/* 9段構造の本文 */}
             <div className="space-y-8">
               {sections.map((section) => (
-                <section key={section.en}>
-                  <h4 className="mb-2 flex items-baseline gap-3 border-b border-(--line) pb-2">
+                <section key={section.en} className="grid gap-3 border-t border-(--line) pt-5 md:grid-cols-[8rem_1fr] md:gap-6">
+                  <h4 className="flex flex-col gap-1">
                     <span className="spec-label">{section.en}</span>
                     <span className="text-base font-bold">{section.label}</span>
                   </h4>
-                  <div className="text-sm leading-loose text-(--ink-soft)">{section.body}</div>
+                  <div className="max-w-3xl text-sm leading-loose text-(--ink-soft)">{section.body}</div>
                 </section>
               ))}
             </div>

@@ -116,7 +116,7 @@ export function ProcessTimeline() {
           index="04"
           en="Process / Thinking"
           ja="プロセス"
-          quickSummary="きれいな順番に見えますが、実際は行ったり来たりです。作って、違和感が増えて、また戻ることが多いです。"
+          quickSummary="毎回この順番ではありません。作ったら違和感が増える。そこから、また前に戻ります。"
         />
 
         <div className="grid gap-10 lg:grid-cols-[auto_1fr] lg:gap-16">
@@ -147,7 +147,9 @@ export function ProcessTimeline() {
                   ref={(el) => {
                     stepRefs.current[i] = el;
                   }}
-                  className="relative pl-10"
+                  className={`relative pl-10 transition-opacity duration-300 ${
+                    active ? "opacity-100" : "opacity-70 hover:opacity-100"
+                  }`}
                 >
                   <span
                     aria-hidden="true"
@@ -157,7 +159,11 @@ export function ProcessTimeline() {
                       background: active ? "var(--ink)" : "var(--paper)",
                     }}
                   />
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                  <div
+                    className={`flex flex-wrap items-center gap-x-4 gap-y-2 border border-transparent py-2 pr-3 transition-colors duration-300 ${
+                      active ? "border-(--line) bg-(--paper)" : ""
+                    }`}
+                  >
                     <div className="lg:hidden">
                       <GlyphSvg step={step} active={active} />
                     </div>

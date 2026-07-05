@@ -3,9 +3,11 @@ import { skillCategories } from "../data/skills";
 import { works } from "../data/works";
 import { SKILL_LEVEL_LABELS } from "../types";
 import { useReveal } from "../hooks/useReveal";
+import { haptic } from "../lib/haptics";
 
 /** スキルをクリックすると、それを使った作品カードへスクロールする */
 function jumpToWork(workId: string) {
+  haptic(8);
   const el = document.getElementById(`work-${workId}`);
   if (el) {
     el.scrollIntoView({ behavior: "smooth", block: "center" });

@@ -2,15 +2,34 @@ import { useEffect, useRef, useState } from "react";
 import { SectionHeader } from "./SectionHeader";
 import { processSteps } from "../data/process";
 import type { ProcessStep } from "../types";
+import { haptic } from "../lib/haptics";
+
+/** 全ステップの中で最大のセル数。これに満たないステップは末尾セルを複製してパディングする */
+const MAX_GLYPH_CELLS = Math.max(...processSteps.map((s) => s.glyph.length));
+
+/**
+ * グリフ配列を MAX_GLYPH_CELLS 件に揃える。
+ * 不足分は最後のセルと同座標・opacity 0 のダミーとして埋め、
+ * rect要素をインデックスでkeyし続けられるようにする(=モーフの土台)。
+ */
+function padGlyph(step: ProcessStep) {
+  const last = step.glyph[step.glyph.length - 1];
+  const padded = [...step.glyph];
+  while (padded.length < MAX_GLYPH_CELLS) {
+    padded.push({ x: last.x, y: last.y, tone: last.tone });
+  }
+  return padded.map((g, i) => ({ ...g, visible: i < step.glyph.length }));
+}
 
 /** 3x3グリッドのボクセルグリフ。ステップごとに配置が変形する */
 function GlyphSvg({ step, active }: { step: ProcessStep; active: boolean }) {
   const size = 84;
   const cell = size / 3;
+  const cells = padGlyph(step);
   return (
     <svg
       viewBox={`0 0 ${size} ${size}`}
-      className="h-16 w-16 md:h-20 md:w-20"
+      className="glyph-morph h-16 w-16 md:h-20 md:w-20"
       aria-hidden="true"
     >
       {/* 下地グリッド */}
@@ -30,9 +49,10 @@ function GlyphSvg({ step, active }: { step: ProcessStep; active: boolean }) {
           />
         );
       })}
-      {step.glyph.map((g, i) => (
+      {cells.map((g, i) => (
         <rect
           key={i}
+          className="cell"
           x={g.x * cell + 4}
           y={g.y * cell + 4}
           width={cell - 8}
@@ -46,11 +66,7 @@ function GlyphSvg({ step, active }: { step: ProcessStep; active: boolean }) {
           }
           stroke="var(--ink)"
           strokeWidth={g.tone === "white" ? 1.25 : 0}
-          style={{
-            opacity: active ? 1 : 0.25,
-            transition: "opacity 0.5s ease",
-            transitionDelay: `${i * 60}ms`,
-          }}
+          opacity={active && g.visible ? 1 : 0}
         />
       ))}
     </svg>
@@ -64,6 +80,8 @@ function GlyphSvg({ step, active }: { step: ProcessStep; active: boolean }) {
 export function ProcessTimeline() {
   const [activeIndex, setActiveIndex] = useState(0);
   const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
+  // 初回マウント時は鳴らさず、スクロールでの変化時のみ触覚を鳴らすための前回値
+  const prevIndexRef = useRef<number | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -83,6 +101,14 @@ export function ProcessTimeline() {
     return () => observer.disconnect();
   }, []);
 
+  // activeIndexの変化時のみ、タッチ端末(pointer: coarse)で軽い触覚を鳴らす
+  useEffect(() => {
+    if (prevIndexRef.current !== null && prevIndexRef.current !== activeIndex) {
+      if (window.matchMedia("(pointer: coarse)").matches) haptic(6);
+    }
+    prevIndexRef.current = activeIndex;
+  }, [activeIndex]);
+
   return (
     <section id="process" className="border-y border-(--line) bg-(--gray-1)">
       <div className="container-site" style={{ paddingBlock: "var(--section-gap)" }}>
@@ -98,10 +124,12 @@ export function ProcessTimeline() {
           <div className="sticky top-24 hidden h-fit lg:block" aria-hidden="true">
             <div className="caption-box flex flex-col items-center gap-3 px-10 py-8">
               <GlyphSvg step={processSteps[activeIndex]} active />
-              <p className="spec-label">
+              <p key={`n-${activeIndex}`} className="spec-label reveal is-visible">
                 {String(activeIndex + 1).padStart(2, "0")} / {String(processSteps.length).padStart(2, "0")}
               </p>
-              <p className="text-lg font-bold">{processSteps[activeIndex].en}</p>
+              <p key={`t-${activeIndex}`} className="reveal is-visible text-lg font-bold">
+                {processSteps[activeIndex].en}
+              </p>
             </div>
           </div>
 

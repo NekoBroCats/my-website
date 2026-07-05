@@ -23,16 +23,10 @@ export function CareerFit() {
             {career.hiringSummary}
           </p>
           <div className="mt-5 flex flex-wrap gap-4">
-            <a
-              href={`mailto:${profile.email}`}
-              className="border border-(--ink) bg-(--ink) px-5 py-2.5 text-sm text-(--paper) transition-colors hover:bg-transparent hover:text-(--ink)"
-            >
+            <a href={`mailto:${profile.email}`} className="btn btn-solid">
               連絡する
             </a>
-            <a
-              href="#works"
-              className="border border-(--ink) px-5 py-2.5 text-sm transition-colors hover:bg-(--ink) hover:text-(--paper)"
-            >
+            <a href="#works" className="btn btn-ghost">
               作品で確認する
             </a>
           </div>

@@ -2,6 +2,7 @@ import type { Work } from "../types";
 import { WorkMedia } from "./WorkMedia";
 import { useViewMode } from "../context/ViewModeContext";
 import { useReveal } from "../hooks/useReveal";
+import { haptic } from "../lib/haptics";
 
 interface WorkCardProps {
   work: Work;
@@ -16,7 +17,7 @@ export function WorkCard({ work, onOpen }: WorkCardProps) {
     <article
       ref={ref}
       id={`work-${work.id}`}
-      className="reveal group flex scroll-mt-24 flex-col border border-(--line) bg-(--paper) transition-shadow hover:shadow-[0_2px_24px_rgba(17,17,19,0.08)]"
+      className="reveal group flex scroll-mt-24 flex-col border border-(--line) bg-(--paper) transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-[0_2px_24px_rgba(17,17,19,0.08)]"
     >
       {/* ビジュアル(実写画像。未配置の作品はSVGビジュアルで成立) */}
       <div className="work-visual aspect-5/3">
@@ -70,8 +71,11 @@ export function WorkCard({ work, onOpen }: WorkCardProps) {
         <div className="mt-auto pt-5">
           <button
             type="button"
-            onClick={() => onOpen(work)}
-            className="w-full border border-(--ink) py-2.5 text-sm transition-colors group-hover:bg-(--ink) group-hover:text-(--paper) hover:bg-(--ink) hover:text-(--paper)"
+            onClick={() => {
+              haptic(8);
+              onOpen(work);
+            }}
+            className="btn btn-ghost w-full"
           >
             ケーススタディを読む →
           </button>

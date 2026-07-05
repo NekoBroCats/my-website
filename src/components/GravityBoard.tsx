@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { haptic } from "../lib/haptics";
 
 type Dir = 0 | 1 | 2 | 3; // 0:下 1:左 2:上 3:右
 
@@ -71,6 +72,7 @@ export function GravityBoard() {
   const [pieces, setPieces] = useState<Piece[]>(initialPieces);
 
   const rotate = () => {
+    haptic([12, 40, 8]);
     const next = ((dir + 1) % 4) as Dir;
     setDir(next);
     setPieces((prev) => applyGravity(prev, next));
@@ -85,7 +87,7 @@ export function GravityBoard() {
         <button
           type="button"
           onClick={rotate}
-          className="border border-(--ink) px-3 py-1.5 text-xs transition-colors hover:bg-(--ink) hover:text-(--paper)"
+          className="btn btn-ghost px-3 py-1.5 text-xs"
           aria-label={`重力の向きを回転する(現在: ${dirLabels[dir]})`}
         >
           重力を回す {dirLabels[dir]}

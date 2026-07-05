@@ -56,7 +56,7 @@ export function About() {
           </ul>
         </div>
 
-        <div className="space-y-6 text-[0.95rem] leading-loose text-(--ink-soft)">
+        <div className="max-w-2xl space-y-6 text-[0.95rem] leading-loose text-(--ink-soft)">
           {(mode === "quick"
             ? [profile.statement.paragraphs[2]]
             : profile.statement.paragraphs

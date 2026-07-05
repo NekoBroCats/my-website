@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { haptic } from "../lib/haptics";
 
 /**
  * 錯視トランプを象徴するミニデモ。
@@ -14,9 +15,12 @@ export function IllusionDemo() {
         <p className="spec-label">Interactive — Munker-type Illusion</p>
         <button
           type="button"
-          onClick={() => setRevealed((v) => !v)}
+          onClick={() => {
+            haptic(8);
+            setRevealed((v) => !v);
+          }}
           aria-pressed={revealed}
-          className="border border-(--ink) px-3 py-1.5 text-xs transition-colors hover:bg-(--ink) hover:text-(--paper)"
+          className="btn btn-ghost px-3 py-1.5 text-xs"
         >
           {revealed ? "ストライプを戻す" : "ストライプを外す"}
         </button>

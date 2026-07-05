@@ -5,6 +5,7 @@ import { WorkMedia } from "./WorkMedia";
 import { WorkGallery } from "./WorkGallery";
 import { GravityBoard } from "./GravityBoard";
 import { IllusionDemo } from "./IllusionDemo";
+import { haptic } from "../lib/haptics";
 
 interface WorkDetailProps {
   work: Work;
@@ -31,7 +32,10 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
     document.body.style.overflow = "hidden";
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        haptic(6);
+        onClose();
+      }
       if (e.key === "Tab" && panelRef.current) {
         const focusables = panelRef.current.querySelectorAll<HTMLElement>(
           'button, a[href], [tabindex]:not([tabindex="-1"])',
@@ -131,9 +135,12 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
               <button
                 ref={closeRef}
                 type="button"
-                onClick={onClose}
+                onClick={() => {
+                  haptic(6);
+                  onClose();
+                }}
                 aria-label="詳細を閉じる"
-                className="shrink-0 border border-(--line-strong) px-3 py-1.5 text-sm transition-colors hover:bg-(--ink) hover:text-(--paper)"
+                className="btn btn-ghost shrink-0 px-3 py-1.5"
               >
                 閉じる ✕
               </button>
@@ -148,7 +155,10 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
                     type="button"
                     role="tab"
                     aria-selected={lens === key}
-                    onClick={() => setLens(key)}
+                    onClick={() => {
+                      haptic(6);
+                      setLens(key);
+                    }}
                     className={`px-3.5 py-1.5 transition-colors ${
                       lens === key
                         ? "bg-(--ink) text-(--paper)"

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { assetUrl } from "../lib/assetUrl";
+import { haptic } from "../lib/haptics";
 
 interface WorkGalleryProps {
   images: { src: string; alt: string }[];
@@ -40,7 +41,10 @@ export function WorkGallery({ images }: WorkGalleryProps) {
               role="tab"
               aria-selected={i === active}
               aria-label={`画像 ${i + 1}/${images.length}: ${img.alt}`}
-              onClick={() => setActive(i)}
+              onClick={() => {
+                haptic(6);
+                setActive(i);
+              }}
               className={`h-14 w-20 shrink-0 overflow-hidden border transition-colors ${
                 i === active
                   ? "border-(--ink)"

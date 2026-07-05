@@ -1,6 +1,6 @@
 export const profile = {
   name: "山根瑛之輔",
-  nameEn: "Einosuke Yamane",
+  nameEn: "Yamane Akinosuke",
   title: "Perception Designer / Prototype Creator",
   titleJa: "認識を設計する、企画・試作型クリエイター",
   heroStatement: [

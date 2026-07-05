@@ -1,5 +1,6 @@
 import { useViewMode } from "../context/ViewModeContext";
 import type { ViewMode } from "../types";
+import { haptic } from "../lib/haptics";
 
 /**
  * Quick Scan(採用担当者向け・短時間) / Deep Dive(現場・面接官向け・深掘り) の切替。
@@ -27,8 +28,11 @@ export function LensToggle() {
             type="button"
             role="radio"
             aria-checked={active}
-            onClick={() => setMode(opt.value)}
-            className={`en rounded-full px-3 py-1.5 tracking-wider transition-colors ${
+            onClick={() => {
+              if (mode !== opt.value) haptic(8);
+              setMode(opt.value);
+            }}
+            className={`en rounded-full px-3 py-1.5 tracking-wider transition-colors duration-300 ${
               active
                 ? "bg-(--ink) text-(--paper)"
                 : "text-(--gray-5) hover:text-(--ink)"

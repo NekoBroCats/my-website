@@ -23,7 +23,7 @@ export function Hero() {
         <h1 className="mb-2 text-4xl leading-tight font-bold tracking-wide md:text-6xl">
           {profile.name}
         </h1>
-        <p className="en mb-8 text-sm tracking-[0.18em] text-(--ink-soft) md:text-base">
+        <p className="en mb-8 text-sm text-(--ink-soft) md:text-base">
           {profile.title}
         </p>
         <p className="serif max-w-2xl text-lg leading-loose md:text-xl">
@@ -40,7 +40,7 @@ export function Hero() {
             return (
               <li
                 key={word}
-                className="en text-xs tracking-[0.25em] uppercase"
+                className="spec-label"
                 style={{ color: `rgb(${shade},${shade},${shade})` }}
               >
                 {word}
@@ -72,10 +72,7 @@ export function Hero() {
         )}
 
         <div className="mt-10 flex items-center gap-6">
-          <a
-            href="#works"
-            className="border border-(--ink) bg-(--ink) px-5 py-2.5 text-sm text-(--paper) transition-colors hover:bg-transparent hover:text-(--ink)"
-          >
+          <a href="#works" className="btn btn-solid">
             作品を見る
           </a>
           <a

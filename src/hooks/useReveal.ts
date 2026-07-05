@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-/** 要素が画面に入ったら .is-visible を付与する(reduced-motion時はCSS側で無効化) */
+/** 要素が画面に入ったら .is-visible を付与する */
 export function useReveal<T extends HTMLElement>() {
   const ref = useRef<T>(null);
 

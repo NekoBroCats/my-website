@@ -17,7 +17,7 @@ export function WorkGallery({ images }: WorkGalleryProps) {
   const current = images[active];
 
   return (
-    <div>
+    <figure>
       <div className="flex justify-center border border-(--line) bg-(--gray-1)">
         <img
           key={current.src}
@@ -28,9 +28,12 @@ export function WorkGallery({ images }: WorkGalleryProps) {
           className="max-h-[68svh] w-auto max-w-full"
         />
       </div>
+      <figcaption className="mt-2 text-xs leading-relaxed text-(--gray-5)">
+        {current.alt}
+      </figcaption>
       {images.length > 1 && (
         <div
-          role="tablist"
+          role="group"
           aria-label="ギャラリー画像を選択"
           className="mt-3 flex gap-2 overflow-x-auto pb-1"
         >
@@ -38,8 +41,7 @@ export function WorkGallery({ images }: WorkGalleryProps) {
             <button
               key={img.src}
               type="button"
-              role="tab"
-              aria-selected={i === active}
+              aria-pressed={i === active}
               aria-label={`画像 ${i + 1}/${images.length}: ${img.alt}`}
               onClick={() => {
                 haptic(6);
@@ -63,6 +65,6 @@ export function WorkGallery({ images }: WorkGalleryProps) {
           ))}
         </div>
       )}
-    </div>
+    </figure>
   );
 }

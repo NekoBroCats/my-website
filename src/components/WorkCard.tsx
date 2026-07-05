@@ -17,7 +17,7 @@ export function WorkCard({ work, onOpen }: WorkCardProps) {
     <article
       ref={ref}
       id={`work-${work.id}`}
-      className="reveal group flex scroll-mt-24 flex-col border border-(--line) bg-(--paper) transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-[0_2px_24px_rgba(17,17,19,0.08)]"
+      className="reveal group flex scroll-mt-24 flex-col border border-(--line) bg-(--paper) transition-[box-shadow,transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-(--line-strong) hover:shadow-[0_2px_24px_rgba(17,17,19,0.08)] focus-within:border-(--ink)"
     >
       {/* ビジュアル(実写画像。未配置の作品はSVGビジュアルで成立) */}
       <div className="work-visual aspect-5/3">
@@ -71,6 +71,7 @@ export function WorkCard({ work, onOpen }: WorkCardProps) {
         <div className="mt-auto pt-5">
           <button
             type="button"
+            aria-label={`${work.title}のケーススタディを読む`}
             onClick={() => {
               haptic(8);
               onOpen(work);

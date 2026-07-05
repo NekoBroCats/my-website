@@ -8,7 +8,13 @@ dist
 .agents/
 skills-lock.json
 
-# 元画像(100MB超のファイルがありGitHubにプッシュ不可。Web最適化済みコピーのみコミット)
+# ローカル元素材置き場。公開素材に書き出す前の写真・PSD・巨大ファイルはコミットしない。
+asset-sources/*
+!asset-sources/README.md
+
+# 元画像・候補画像(100MB超のファイルがありGitHubにプッシュ不可)
+# public/assets/works/ には公開で使う軽量化済みコピーだけをコミットする。
 public/assets/works/*
 !public/assets/works/web/
+!public/assets/works/web/**
 !public/assets/works/README.md

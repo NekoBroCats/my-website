@@ -27,6 +27,7 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
 
   // フォーカス移動・Escで閉じる・背景スクロールのロック
   useEffect(() => {
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     closeRef.current?.focus();
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -56,6 +57,7 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
+      previouslyFocused?.focus();
     };
   }, [onClose]);
 
@@ -116,6 +118,7 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
           role="dialog"
           aria-modal="true"
           aria-labelledby="work-detail-title"
+          aria-describedby="work-detail-summary"
           className="max-h-[92svh] w-full max-w-3xl overflow-y-auto border border-(--line-strong) bg-(--paper) md:max-h-[86svh]"
         >
           {/* ヘッダー */}
@@ -131,6 +134,9 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
                     </span>
                   )}
                 </h3>
+                <p id="work-detail-summary" className="mt-1 text-sm text-(--ink-soft)">
+                  {work.oneLiner}
+                </p>
               </div>
               <button
                 ref={closeRef}
@@ -142,7 +148,7 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
                 aria-label="詳細を閉じる"
                 className="btn btn-ghost shrink-0 px-3 py-1.5"
               >
-                閉じる ✕
+                閉じる
               </button>
             </div>
 

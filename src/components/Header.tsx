@@ -12,7 +12,7 @@ const navItems = [
 
 /** activeなリンクはink色+下線、非activeはgray-5 */
 function navLinkClass({ isActive }: { isActive: boolean }) {
-  return `en tracking-wider transition-colors ${
+  return `en nav-link tracking-wider transition-colors ${
     isActive
       ? "text-(--ink) underline underline-offset-4"
       : "text-(--gray-5) hover:text-(--ink)"
@@ -75,6 +75,7 @@ export function Header() {
             <button
               type="button"
               aria-expanded={menuOpen}
+              aria-controls="mobile-navigation"
               aria-label={menuOpen ? "メニューを閉じる" : "メニューを開く"}
               onClick={() => {
                 haptic(8);
@@ -103,7 +104,7 @@ export function Header() {
           headerはbackdrop-filterを持ち containing block を作るため、
           fixedオーバーレイはheaderの外(兄弟要素)に置いてビューポート基準で全画面化する */}
       {menuOpen && (
-        <div className="fixed inset-0 top-14 z-40 flex flex-col bg-(--paper) md:hidden">
+        <div id="mobile-navigation" className="fixed inset-0 top-14 z-40 flex flex-col bg-(--paper) md:hidden">
           <nav aria-label="モバイルナビゲーション" className="flex flex-1 flex-col justify-center px-8">
             <ul className="space-y-6">
               {navItems.map((item) => (
@@ -112,7 +113,7 @@ export function Header() {
                     to={item.to}
                     onClick={closeMenu}
                     className={({ isActive }) =>
-                      `en block text-3xl font-bold tracking-wide transition-colors ${
+                      `en nav-link block text-3xl font-bold tracking-wide transition-colors ${
                         isActive ? "text-(--ink) underline underline-offset-4" : "text-(--gray-5)"
                       }`
                     }

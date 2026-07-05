@@ -18,7 +18,7 @@ export function LensToggle() {
     <div
       role="radiogroup"
       aria-label="閲覧モード切替"
-      className="flex items-center rounded-full border border-(--line-strong) bg-(--paper) p-0.5 text-xs"
+      className="flex items-center border border-(--line-strong) bg-(--paper) p-0.5 text-xs"
     >
       {options.map((opt) => {
         const active = mode === opt.value;

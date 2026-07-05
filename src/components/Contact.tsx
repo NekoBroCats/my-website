@@ -12,14 +12,21 @@ export function Contact() {
           <SectionHeaderDark />
           <div className="grid gap-10 md:grid-cols-2">
             <div>
-              <p className="serif text-2xl leading-relaxed md:text-3xl">
-                見方が変わる体験を、
-                <br />
-                一緒に作りませんか。
+              <p className="serif max-w-lg text-2xl leading-relaxed md:text-3xl">
+                試作で確かめたい問いがあれば、
+                <br className="hidden sm:block" />
+                作品と同じ粒度で話せます。
               </p>
               <p className="mt-4 max-w-md text-sm leading-loose text-(--gray-3)">
-                ポートフォリオの詳細資料、実物プロトタイプのデモ、制作プロセスの説明など、面接・カジュアル面談の形式に合わせて対応できます。
+                作品の詳細資料、実物プロトタイプのデモ、制作プロセスの説明、VRChat / Unityまわりの技術確認まで、面談の形式に合わせて準備できます。
               </p>
+              <a
+                href={`mailto:${profile.email}`}
+                className="btn btn-invert mt-7"
+                aria-label={`${profile.email}へメールを送る`}
+              >
+                メールで連絡する
+              </a>
             </div>
             <div className="space-y-5">
               <div>
@@ -33,7 +40,7 @@ export function Contact() {
                 <p className="spec-label mb-1.5">Email</p>
                 <a
                   href={`mailto:${profile.email}`}
-                  className="en text-base break-all underline decoration-(--gray-4) underline-offset-4 transition-colors hover:decoration-(--paper)"
+                  className="en nav-link text-base break-all underline decoration-(--gray-4) underline-offset-4 transition-colors hover:decoration-(--paper)"
                 >
                   {profile.email}
                 </a>
@@ -48,7 +55,7 @@ export function Contact() {
                           href={link.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="underline underline-offset-4 hover:text-(--paper)"
+                          className="nav-link underline underline-offset-4 hover:text-(--paper)"
                         >
                           {link.label}
                         </a>
@@ -67,7 +74,7 @@ export function Contact() {
 
         <footer className="mt-16 flex flex-wrap items-center justify-between gap-3 border-t border-(--gray-5) pt-6 text-xs text-(--gray-4)">
           <p className="en tracking-wider">© {new Date().getFullYear()} {profile.nameEn} — Perception as Interface</p>
-          <Link to="/" className="underline underline-offset-4 hover:text-(--paper)">
+          <Link to="/" className="nav-link underline underline-offset-4 hover:text-(--paper)">
             ページの先頭へ ↑
           </Link>
         </footer>

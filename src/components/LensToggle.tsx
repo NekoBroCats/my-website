@@ -3,15 +3,15 @@ import type { ViewMode } from "../types";
 import { haptic } from "../lib/haptics";
 
 /**
- * Quick Scan(採用担当者向け・短時間) / Deep Dive(現場・面接官向け・深掘り) の切替。
+ * 短く読む / ちゃんと読む の切替。
  * サイト全体の情報量がこのトグルで変わる。
  */
 export function LensToggle() {
   const { mode, setMode } = useViewMode();
 
   const options: { value: ViewMode; label: string; hint: string }[] = [
-    { value: "quick", label: "Quick Scan", hint: "3分で概要" },
-    { value: "deep", label: "Deep Dive", hint: "深く読む" },
+    { value: "quick", label: "さっと見る", hint: "短め" },
+    { value: "deep", label: "ちゃんと読む", hint: "細かめ" },
   ];
 
   return (

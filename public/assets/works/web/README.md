@@ -4,10 +4,10 @@
 
 | ファイル | 作品 | 何の素材か |
 |---|---|---|
-| `voxel-row-main.jpg` | VOXEL ROW | カード/詳細のメインビジュアル |
-| `voxel-row-01.jpg` | VOXEL ROW | 立体構造とパーツ構成の説明用 |
-| `voxel-row-02.jpg` | VOXEL ROW | 手元操作・盤面配置の説明用 |
-| `voxel-row-03.jpg` | VOXEL ROW | 盤面/素材/構造ディテールの説明用 |
+| `voxel-row-main.jpg` | VOXEL ROW / YONもく | カード/詳細のメインビジュアル |
+| `voxel-row-01.jpg` | VOXEL ROW / YONもく | 立体構造とパーツ構成の説明用 |
+| `voxel-row-02.jpg` | VOXEL ROW / YONもく | 手元操作・盤面配置の説明用 |
+| `voxel-row-03.jpg` | VOXEL ROW / YONもく | 盤面/素材/構造ディテールの説明用 |
 | `illusion-cards-main.jpg` | 錯視トランプ | カード/詳細のメインビジュアル |
 | `illusion-cards-01.jpg` | 錯視トランプ | カード全体の説明用 |
 | `illusion-cards-02.jpg` | 錯視トランプ | 錯視パターンの説明用 |

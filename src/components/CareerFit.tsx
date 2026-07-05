@@ -13,13 +13,13 @@ export function CareerFit() {
         index="05"
         en="Career Fit / What I Can Do"
         ja="仕事での活かし方"
-        quickSummary="企画と実装の間に立ち、抽象的なテーマを試作可能な形へ翻訳する役割で価値を出します。"
+        quickSummary="企画だけで終わらせず、かといって実装だけにも寄せず、まず一回試せる形まで持っていくのが得意です。"
       />
 
       <div ref={ref} className="reveal space-y-10">
-        {/* Hiring Summary: 採用担当者向けの結論 */}
+        {/* 面談前に先に読める短いまとめ */}
         <div className="border-2 border-(--ink) p-6 md:p-8">
-          <p className="spec-label mb-3">Hiring Summary</p>
+          <p className="spec-label mb-3">Short Note</p>
           <p className="max-w-3xl text-base leading-loose font-medium md:text-lg">
             {career.hiringSummary}
           </p>

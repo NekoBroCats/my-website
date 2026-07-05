@@ -13,12 +13,12 @@ export function Contact() {
           <div className="grid gap-10 md:grid-cols-2">
             <div>
               <p className="serif max-w-lg text-2xl leading-relaxed md:text-3xl">
-                試作で確かめたい問いがあれば、
+                まだ言葉にしきれていない問いでも、
                 <br className="hidden sm:block" />
-                作品と同じ粒度で話せます。
+                試作の話ならできます。
               </p>
               <p className="mt-4 max-w-md text-sm leading-loose text-(--gray-3)">
-                作品の詳細資料、実物プロトタイプのデモ、制作プロセスの説明、VRChat / Unityまわりの技術確認まで、面談の形式に合わせて準備できます。
+                作品の細かい話、実物プロトタイプの見せ方、VRChat / Unityまわりで何をしたかなど、必要なところから話せます。面談の前に見たい資料があれば用意します。
               </p>
               <a
                 href={`mailto:${profile.email}`}

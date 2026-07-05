@@ -1,18 +1,18 @@
-/** Quick Scan(採用担当者向け) / Deep Dive(現場・面接官向け) の閲覧モード */
+/** 短く読む / ちゃんと読む の閲覧モード */
 export type ViewMode = "quick" | "deep";
 
 /** 作品を読む3つの視点 */
 export type LensKey = "thought" | "tech" | "recruiter";
 
 export const LENS_LABELS: Record<LensKey, string> = {
-  thought: "思想",
-  tech: "技術",
-  recruiter: "採用視点",
+  thought: "考えたこと",
+  tech: "作ったところ",
+  recruiter: "仕事につなげるなら",
 };
 
 /** カード・詳細のビジュアルシステム識別子(画像未配置でも成立させるための描画キー) */
 export type WorkVisual =
-  | "yonmoku"
+  | "voxel-row"
   | "voxel"
   | "illusion"
   | "moodorgan"
@@ -40,7 +40,7 @@ export interface Work {
   /** 一言で言うと何か */
   oneLiner: string;
   summary: string;
-  /** 問題意識 */
+  /** 気になっていたこと */
   problem: string;
   /** 再定義した問い */
   reframing: string;
@@ -48,14 +48,14 @@ export interface Work {
   processShort: string;
   /** 使用技術・素材・ツール */
   tools: string[];
-  /** 見せたい能力 */
+  /** この作品から見える作り方 */
   abilities: string[];
-  /** 採用担当者向けの要約(Recruiter Lens) */
+  /** 仕事や面談で見てほしいところ */
   recruiterSummary: string;
-  /** What this proves */
+  /** この作品から伝わること */
   proof: string[];
   detail: WorkDetailContent;
-  /** 視点切替(思想/技術/採用)ごとの読み解き */
+  /** 視点切替ごとの読み解き */
   lenses: Record<LensKey, string>;
   visual: WorkVisual;
   /** メイン画像(public/assets 配下)。null または読み込み失敗時はSVGビジュアルで成立する */
@@ -76,11 +76,11 @@ export type SkillLevel =
   | "learning";
 
 export const SKILL_LEVEL_LABELS: Record<SkillLevel, string> = {
-  "can-design-with": "設計に使える",
-  "can-prototype": "試作できる",
-  "can-use": "使える",
-  "can-explain": "説明できる",
-  learning: "学習中",
+  "can-design-with": "よく使う",
+  "can-prototype": "手を動かせる",
+  "can-use": "必要なら使う",
+  "can-explain": "話せる",
+  learning: "触っている",
 };
 
 export interface Skill {

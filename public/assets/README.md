@@ -8,10 +8,10 @@
 |---|---|---|
 | `ogp.png` | SNS共有用OGP画像 | `index.html` |
 | `profile/yamane-portrait.jpg` | Aboutページのプロフィール写真 | `src/components/About.tsx` |
-| `works/web/voxel-row-main.jpg` | VOXEL ROWのカード/詳細メイン画像 | `src/data/works.ts` |
-| `works/web/voxel-row-01.jpg` | VOXEL ROWの詳細ギャラリー: 立体構造全体 | `src/data/works.ts` |
-| `works/web/voxel-row-02.jpg` | VOXEL ROWの詳細ギャラリー: 手元の操作/配置 | `src/data/works.ts` |
-| `works/web/voxel-row-03.jpg` | VOXEL ROWの詳細ギャラリー: 盤面/構造ディテール | `src/data/works.ts` |
+| `works/web/voxel-row-main.jpg` | VOXEL ROW / YONもくのカード/詳細メイン画像 | `src/data/works.ts` |
+| `works/web/voxel-row-01.jpg` | VOXEL ROW / YONもくの詳細ギャラリー: 立体構造全体 | `src/data/works.ts` |
+| `works/web/voxel-row-02.jpg` | VOXEL ROW / YONもくの詳細ギャラリー: 手元の操作/配置 | `src/data/works.ts` |
+| `works/web/voxel-row-03.jpg` | VOXEL ROW / YONもくの詳細ギャラリー: 盤面/構造ディテール | `src/data/works.ts` |
 | `works/web/illusion-cards-main.jpg` | 錯視トランプのカード/詳細メイン画像 | `src/data/works.ts` |
 | `works/web/illusion-cards-01.jpg` | 錯視トランプの詳細ギャラリー: カード全体 | `src/data/works.ts` |
 | `works/web/illusion-cards-02.jpg` | 錯視トランプの詳細ギャラリー: 錯視パターン | `src/data/works.ts` |
@@ -28,7 +28,7 @@
 
 | 場所 | 内容 | 扱い |
 |---|---|---|
-| `asset-sources/works/voxelrow/` | VOXEL ROWの撮影元、PSD、未圧縮/巨大素材 | 必要な画像だけ `public/assets/works/web/` に軽量化してコピー |
+| `asset-sources/works/voxelrow/` | VOXEL ROW / YONもくの撮影元、PSD、未圧縮/巨大素材 | 必要な画像だけ `public/assets/works/web/` に軽量化してコピー |
 | `asset-sources/works/illusioncards/` | 錯視トランプの撮影元/候補写真 | 必要な画像だけ `public/assets/works/web/` に軽量化してコピー |
 | `asset-sources/works/Moodorgan/` | MOODORGANの撮影元/候補写真 | 必要な画像だけ `public/assets/works/web/` に軽量化してコピー |
 | `asset-sources/works/Myface.jpg` | 旧プロフィール候補画像 | 使う場合は `public/assets/profile/yamane-portrait.jpg` に最適化して置く |

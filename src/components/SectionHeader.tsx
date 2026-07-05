@@ -4,7 +4,7 @@ interface SectionHeaderProps {
   index: string;
   en: string;
   ja: string;
-  /** Quick Scan向け「3秒で分かる要約」 */
+  /** 短く読むモード向けの要約 */
   quickSummary?: string;
 }
 

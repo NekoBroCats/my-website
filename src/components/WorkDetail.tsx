@@ -16,9 +16,8 @@ const lensKeys: LensKey[] = ["thought", "tech", "recruiter"];
 
 /**
  * 作品詳細モーダル。
- * Overview → Problem → Reframing → Concept → Process → Implementation
- * → Outcome → What this proves → Next の9段構造。
- * 上部の視点切替(思想/技術/採用)で、同じ作品の読み解きが変わる。
+ * 作品詳細モーダル。
+ * 本人が制作を振り返る文章として読めるよう、見出しも説明調に寄せすぎない。
  */
 export function WorkDetail({ work, onClose }: WorkDetailProps) {
   const [lens, setLens] = useState<LensKey>("thought");
@@ -62,16 +61,16 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
   }, [onClose]);
 
   const sections: { label: string; en: string; body: React.ReactNode }[] = [
-    { label: "概要", en: "01 Overview", body: <p>{work.detail.overview}</p> },
-    { label: "問題意識", en: "02 Problem", body: <p>{work.detail.problem}</p> },
+    { label: "何を作ったか", en: "01 Overview", body: <p>{work.detail.overview}</p> },
+    { label: "気になっていたこと", en: "02 Problem", body: <p>{work.detail.problem}</p> },
     {
-      label: "問いの再定義",
+      label: "どう言い直したか",
       en: "03 Reframing",
       body: <p className="serif text-lg leading-loose">{work.detail.reframing}</p>,
     },
-    { label: "コンセプト", en: "04 Concept", body: <p>{work.detail.concept}</p> },
+    { label: "作るときの芯", en: "04 Concept", body: <p>{work.detail.concept}</p> },
     {
-      label: "プロセス",
+      label: "やったこと",
       en: "05 Process",
       body: (
         <ol className="space-y-2">
@@ -87,14 +86,14 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
       ),
     },
     {
-      label: "試作・実装",
+      label: "作り方",
       en: "06 Prototype / Implementation",
       body: <p>{work.detail.implementation}</p>,
     },
-    { label: "結果", en: "07 Outcome", body: <p>{work.detail.outcome}</p> },
+    { label: "やってみて分かったこと", en: "07 Outcome", body: <p>{work.detail.outcome}</p> },
     {
-      label: "この作品が証明すること",
-      en: "08 What this proves",
+      label: "見てほしいところ",
+      en: "08 What to notice",
       body: (
         <ul className="space-y-2">
           {work.proof.map((p) => (
@@ -106,7 +105,7 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
         </ul>
       ),
     },
-    { label: "今後の展開", en: "09 Next development", body: <p>{work.detail.next}</p> },
+    { label: "次にやるなら", en: "09 Next development", body: <p>{work.detail.next}</p> },
   ];
 
   return (
@@ -181,7 +180,7 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
           <div className="p-5 md:p-6">
             {/* 視点別の読み解き */}
             <div className="mb-8 border-l-2 border-(--ink) bg-(--gray-1) p-4" aria-live="polite">
-              <p className="spec-label mb-1.5">{LENS_LABELS[lens]}の視点から</p>
+              <p className="spec-label mb-1.5">{LENS_LABELS[lens]}</p>
               <p className="text-sm leading-relaxed text-(--ink-soft)">{work.lenses[lens]}</p>
             </div>
 
@@ -195,7 +194,7 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
             </div>
 
             {/* 作品固有のインタラクティブデモ */}
-            {work.id === "yonmoku" && (
+            {work.id === "voxel-row-yonmoku" && (
               <div className="mb-8">
                 <GravityBoard />
               </div>

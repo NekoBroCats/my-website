@@ -6,7 +6,7 @@ export const processSteps: ProcessStep[] = [
     en: "Observe",
     ja: "観察する",
     description:
-      "人間の認識、判断、違和感、社会の中の二項対立を観察する。制作はいつも「なにかがズレている」という気づきから始まる。",
+      "まず、なんか引っかかったところをそのまま置いておく。盤面を回したら急に読めなくなるとか、色が同じに見えないとか、そういう小さいズレから始まる。",
     glyph: [
       { x: 1, y: 1, tone: "black" },
       { x: 0, y: 0, tone: "white" },
@@ -20,7 +20,7 @@ export const processSteps: ProcessStep[] = [
     en: "Reframe",
     ja: "問い直す",
     description:
-      "観察したズレを「別の視点から見ると何が起きるか?」という問いに変換する。前提を一つ入れ替えるだけで、見える景色は変わる。",
+      "すぐに答えを出さずに、前提を一個だけ動かしてみる。重力の向き、見る距離、置く順番。大きなテーマより、その一個の変更のほうが大事なことが多い。",
     glyph: [
       { x: 0, y: 1, tone: "black" },
       { x: 1, y: 0, tone: "gray" },
@@ -33,7 +33,7 @@ export const processSteps: ProcessStep[] = [
     en: "Prototype",
     ja: "試作する",
     description:
-      "問いをルール、形状、空間、UI、素材、動きとして試作する。頭の中の仮説を、他者が触れる形に出すのがこの段階。",
+      "紙でも、アクリルでも、Unityでも、とにかく一回外に出す。頭の中では成立していても、手で持った瞬間にだめなことが普通にある。",
     glyph: [
       { x: 0, y: 2, tone: "black" },
       { x: 1, y: 2, tone: "black" },
@@ -47,7 +47,7 @@ export const processSteps: ProcessStep[] = [
     en: "Test",
     ja: "試してもらう",
     description:
-      "他者がどう反応するかを見る。想定通りに使われないことこそが、次の設計のための最も重要なデータになる。",
+      "人に渡して、変な使われ方をされるのを見る。説明した通りに遊ばれなかったところは、失敗というより、だいたい次に直す場所。",
     glyph: [
       { x: 0, y: 0, tone: "black" },
       { x: 0, y: 1, tone: "black" },
@@ -61,7 +61,7 @@ export const processSteps: ProcessStep[] = [
     en: "Refine",
     ja: "調整する",
     description:
-      "見え方、触り方、遊び方、伝わり方を調整する。体験の解像度は、この反復の回数で決まる。",
+      "見え方、触り方、置く間隔、文字の量を少しずつ直す。最後はかなり細かいです。1mmとか、1行とか、手を伸ばす角度とか。",
     glyph: [
       { x: 0, y: 1, tone: "black" },
       { x: 1, y: 1, tone: "gray" },
@@ -73,7 +73,7 @@ export const processSteps: ProcessStep[] = [
     en: "Translate",
     ja: "翻訳する",
     description:
-      "作品を、他者に伝わる言葉と体験へ変換する。キャプション、ルールブック、プレゼンテーション。伝わって初めて、作品は完成する。",
+      "最後に、作ったものを人に渡せる言葉に戻す。ルールブック、キャプション、面談での説明。ここで急に整えすぎると嘘っぽくなるので、作っていたときの引っかかりも残す。",
     glyph: [
       { x: 0, y: 1, tone: "black" },
       { x: 1, y: 1, tone: "black" },

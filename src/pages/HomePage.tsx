@@ -82,7 +82,7 @@ export function HomePage() {
           <span className="text-xs text-(--gray-4)">背景をクリックしても転がります</span>
         </div>
 
-        {/* Quick Scan: 採用担当者向けの即読サマリー */}
+        {/* 短く読むモード用の即読サマリー */}
         {mode === "quick" && (
           <dl className="caption-box mt-10 grid max-w-3xl gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
             <div>

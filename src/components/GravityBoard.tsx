@@ -63,7 +63,7 @@ function applyGravity(pieces: Piece[], dir: Dir): Piece[] {
 const dirLabels = ["↓ 下", "← 左", "↑ 上", "→ 右"] as const;
 
 /**
- * YONもくを象徴するミニ盤面。
+ * VOXEL ROW / YONもくを象徴するミニ盤面。
  * ボタンで重力方向を回転させると、駒が新しい重力に従って再配置される。
  * 完全なゲームではなく「前提が変わると配置(=判断)が変わる」ことを伝える装置。
  */
@@ -131,7 +131,7 @@ export function GravityBoard() {
       <p className="mt-3 text-xs leading-relaxed text-(--gray-5)">
         盤面の前提(重力)が変わると、同じ駒でも配置が変わる。
         <br />
-        YONもくの中核にある考え方です。
+        VOXEL ROW / YONもくの中核にある考え方です。
       </p>
     </div>
   );

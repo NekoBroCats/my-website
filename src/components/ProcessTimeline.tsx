@@ -116,7 +116,7 @@ export function ProcessTimeline() {
           index="04"
           en="Process / Thinking"
           ja="プロセス"
-          quickSummary="観察 → 問い直し → 試作 → テスト → 調整 → 翻訳。どの作品もこの反復で作られています。"
+          quickSummary="きれいな順番に見えますが、実際は行ったり来たりです。作って、違和感が増えて、また戻ることが多いです。"
         />
 
         <div className="grid gap-10 lg:grid-cols-[auto_1fr] lg:gap-16">

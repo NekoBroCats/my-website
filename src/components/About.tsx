@@ -13,8 +13,8 @@ export function About() {
       <SectionHeader
         index="01"
         en="About / Statement"
-        ja="思想"
-        quickSummary="白黒で割り切れない「認識の揺らぎ」を、遊び・展示・プロダクトとして体験できる形に設計するタイプの制作者です。"
+        ja="考えていること"
+        quickSummary="白黒で割り切れないところ、見方を少し変えたら急に崩れるところを、作品の入口にしています。"
       />
 
       <div ref={ref} className="reveal grid gap-10 lg:grid-cols-[1fr_2fr]">
@@ -65,7 +65,7 @@ export function About() {
           ))}
           {mode === "quick" && (
             <p className="text-xs text-(--gray-4)">
-              ※ Deep Dive モードに切り替えると、思想の背景まで読めます。
+              ※ 「ちゃんと読む」に切り替えると、もう少し回り道して話します。
             </p>
           )}
         </div>

@@ -12,7 +12,7 @@
 
 | フォルダ/ファイル | 内容 | Git |
 |---|---|---|
-| `asset-sources/works/voxelrow/` | VOXEL ROWの元写真、PSD、未圧縮候補素材 | コミットしない |
+| `asset-sources/works/voxelrow/` | VOXEL ROW / YONもくの元写真、PSD、未圧縮候補素材 | コミットしない |
 | `asset-sources/works/illusioncards/` | 錯視トランプの元写真、候補素材 | コミットしない |
 | `asset-sources/works/Moodorgan/` | MOODORGANの元写真、候補素材 | コミットしない |
 | `asset-sources/works/Myface.jpg` | 旧プロフィール候補 | コミットしない |

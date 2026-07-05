@@ -15,7 +15,7 @@ export function WorksSection() {
           index="02"
           en="Works / Case Studies"
           ja="作品"
-          quickSummary="各作品は「何を証明しているか」で読めます。カード内の Recruiter Lens が能力証明の要約です。"
+          quickSummary="全部を同じ粒度では説明していません。気になった作品から、作っている途中の引っかかりごと読めるようにしています。"
         />
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">

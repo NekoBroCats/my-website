@@ -22,7 +22,7 @@ export function SkillMap() {
         index="03"
         en="Skills / Tools"
         ja="スキル"
-        quickSummary="企画・デザイン・実装・リサーチを横断。スキル名をクリックすると、それを使った作品に飛べます。"
+        quickSummary="資格や肩書きというより、作っている途中でよく使う手つきです。考える、作る、また考える、を行き来しています。"
       />
 
       <div ref={ref} className="reveal grid gap-px overflow-hidden border border-(--line) bg-(--line) md:grid-cols-2">
@@ -71,7 +71,7 @@ export function SkillMap() {
       </div>
 
       <p className="mt-4 text-xs text-(--gray-4)">
-        熟練度は星ではなく「実務でどう使えるか」で表記しています。↗ の付いたスキルは、クリックで関連作品へ移動します。
+        ラベルは自己申告のメモです。↗ が付いたものは、実際に使った作品まで飛べます。
       </p>
     </section>
   );

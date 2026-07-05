@@ -34,24 +34,24 @@ export function WorkCard({ work, onOpen }: WorkCardProps) {
         </h3>
         <p className="mt-1 text-sm font-medium text-(--ink-soft)">{work.oneLiner}</p>
 
-        {/* Recruiter Lens: この作品が何の能力証明かを一瞬で見せる */}
+        {/* 面談などで先に見てほしいところ */}
         <div className="mt-4 border-l-2 border-(--ink) bg-(--gray-1) p-3">
-          <p className="spec-label mb-1.5">Recruiter Lens</p>
+          <p className="spec-label mb-1.5">見てほしいところ</p>
           <p className="text-xs leading-relaxed text-(--ink-soft)">{work.recruiterSummary}</p>
         </div>
 
         {mode === "deep" && (
           <dl className="mt-4 space-y-3 text-xs leading-relaxed text-(--ink-soft)">
             <div>
-              <dt className="spec-label mb-1.5">問題意識</dt>
+              <dt className="spec-label mb-1.5">気になっていたこと</dt>
               <dd>{work.problem}</dd>
             </div>
             <div>
-              <dt className="spec-label mb-1.5">再定義した問い</dt>
+              <dt className="spec-label mb-1.5">言い直した問い</dt>
               <dd className="serif text-[0.8rem]">{work.reframing}</dd>
             </div>
             <div>
-              <dt className="spec-label mb-1.5">制作プロセス</dt>
+              <dt className="spec-label mb-1.5">やったこと</dt>
               <dd>{work.processShort}</dd>
             </div>
           </dl>

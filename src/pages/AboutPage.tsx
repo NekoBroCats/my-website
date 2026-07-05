@@ -4,9 +4,9 @@ import { usePageTitle } from "../hooks/usePageTitle";
 
 const heroWords = ["Binary", "Gray", "Perspective", "Play", "Prototype"];
 
-/** 思想とプロセス。旧HeroのbinaryWords列をここに移植する。 */
+/** 考えていることとプロセス。旧HeroのbinaryWords列をここに移植する。 */
 export function AboutPage() {
-  usePageTitle("思想とプロセス | 山根瑛之輔 Portfolio");
+  usePageTitle("考えていることとプロセス | 山根瑛之輔 Portfolio");
 
   return (
     <div className="pt-14">

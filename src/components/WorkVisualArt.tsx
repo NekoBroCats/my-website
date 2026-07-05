@@ -6,7 +6,7 @@ import type { WorkVisual } from "../types";
  */
 export function WorkVisualArt({ visual }: { visual: WorkVisual }) {
   switch (visual) {
-    case "yonmoku":
+    case "voxel-row":
       return <YonmokuArt />;
     case "voxel":
       return <VoxelArt />;
@@ -30,7 +30,7 @@ const svgProps = {
   role: "presentation",
 } as const;
 
-/* YONもく: 回転する盤と重力を受ける駒 */
+/* VOXEL ROW / YONもく: 回転する盤と重力を受ける駒 */
 function YonmokuArt() {
   return (
     <svg {...svgProps}>

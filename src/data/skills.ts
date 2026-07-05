@@ -1,0 +1,65 @@
+import type { SkillCategory } from "../types";
+
+export const skillCategories: SkillCategory[] = [
+  {
+    id: "planning",
+    title: "企画・コンセプト",
+    titleEn: "Planning / Concept",
+    description: "違和感の観察から、遊べる・触れる形への翻訳まで。",
+    skills: [
+      { name: "問題発見", level: "can-design-with", relatedWorkIds: ["yonmoku", "moodorgan"] },
+      { name: "問いの再定義", level: "can-design-with", relatedWorkIds: ["yonmoku", "illusion-cards"] },
+      { name: "コンセプト設計", level: "can-design-with", relatedWorkIds: ["moodorgan", "yonmoku"] },
+      { name: "展示体験設計", level: "can-prototype", relatedWorkIds: ["yonmoku"] },
+      { name: "ゲームルール設計", level: "can-design-with", relatedWorkIds: ["yonmoku", "illusion-cards"] },
+      { name: "プロトタイピング設計", level: "can-design-with", relatedWorkIds: ["yonmoku", "unity-technical"] },
+    ],
+  },
+  {
+    id: "design",
+    title: "デザイン・ビジュアル",
+    titleEn: "Design / Visual",
+    description: "3DCGからグラフィック、展示物まで。「伝わる見た目」を作る。",
+    skills: [
+      { name: "3DCG", level: "can-design-with", relatedWorkIds: ["product-modeling"] },
+      { name: "プロダクトモデリング", level: "can-design-with", relatedWorkIds: ["product-modeling"] },
+      { name: "グラフィックデザイン", level: "can-prototype", relatedWorkIds: ["moodorgan", "illusion-cards"] },
+      { name: "ポスター設計", level: "can-prototype", relatedWorkIds: ["moodorgan"] },
+      { name: "展示物設計", level: "can-prototype", relatedWorkIds: ["yonmoku"] },
+      { name: "情報設計", level: "can-prototype", relatedWorkIds: ["moodorgan", "vr-spatial-ui"] },
+    ],
+  },
+  {
+    id: "technical",
+    title: "技術・実装",
+    titleEn: "Technical",
+    description: "コンセプトを「動くもの」にするための実装スキル。",
+    skills: [
+      { name: "Unity", level: "can-prototype", relatedWorkIds: ["unity-technical", "vr-spatial-ui"] },
+      { name: "C#", level: "can-prototype", relatedWorkIds: ["unity-technical"] },
+      { name: "UdonSharp", level: "can-prototype", relatedWorkIds: ["unity-technical", "vr-spatial-ui"] },
+      { name: "VRChat World", level: "can-prototype", relatedWorkIds: ["vr-spatial-ui", "unity-technical"] },
+      { name: "Maya", level: "can-design-with", relatedWorkIds: ["product-modeling"] },
+      { name: "Arnold", level: "can-use", relatedWorkIds: ["product-modeling"] },
+      { name: "PBR", level: "can-use", relatedWorkIds: ["product-modeling"] },
+      { name: "Python", level: "can-use", relatedWorkIds: [] },
+      { name: "Arduino", level: "can-prototype", relatedWorkIds: [] },
+      { name: "Google Sheets API", level: "can-use", relatedWorkIds: [] },
+      { name: "p5.js", level: "learning", relatedWorkIds: [] },
+    ],
+  },
+  {
+    id: "research",
+    title: "リサーチ・アーカイブ",
+    titleEn: "Research / Archive",
+    description: "司書的な情報整理と、学芸員的な展示の視点。",
+    skills: [
+      { name: "司書的情報整理", level: "can-use", relatedWorkIds: [] },
+      { name: "学芸員的展示視点", level: "can-explain", relatedWorkIds: ["yonmoku"] },
+      { name: "資料調査", level: "can-use", relatedWorkIds: ["moodorgan", "illusion-cards"] },
+      { name: "比較分析", level: "can-use", relatedWorkIds: ["vr-spatial-ui"] },
+      { name: "キャプション設計", level: "can-prototype", relatedWorkIds: ["moodorgan"] },
+      { name: "文化施設の提案", level: "can-explain", relatedWorkIds: [] },
+    ],
+  },
+];

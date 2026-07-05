@@ -1,0 +1,14 @@
+node_modules
+dist
+*.local
+.DS_Store
+
+# ローカル環境・エージェント設定(公開リポジトリに含めない)
+.claude/
+.agents/
+skills-lock.json
+
+# 元画像(100MB超のファイルがありGitHubにプッシュ不可。Web最適化済みコピーのみコミット)
+public/assets/works/*
+!public/assets/works/web/
+!public/assets/works/README.md

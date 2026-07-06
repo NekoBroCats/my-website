@@ -181,6 +181,7 @@ function resolveRoll(
 const CUBE_COLOR_WHITE = new THREE.Color("#eeeeea");
 const CUBE_COLOR_BLACK = new THREE.Color("#1a1a1e");
 const CUBE_COLOR_GRAY = new THREE.Color("#8d8d8a");
+const CUBE_COLOR_HOVER = new THREE.Color("#b8b8b3");
 
 interface SceneProps {
   cubes: CubeData[];
@@ -189,10 +190,11 @@ interface SceneProps {
   reduced: boolean;
   isMobile: boolean;
   rollRequestRef: React.MutableRefObject<RollDir | null>;
+  invalidateRef: React.MutableRefObject<(() => void) | null>;
 }
 
-function Scene({ cubes, cols, rows, reduced, isMobile, rollRequestRef }: SceneProps) {
-  const { size, camera } = useThree();
+function Scene({ cubes, cols, rows, reduced, isMobile, rollRequestRef, invalidateRef }: SceneProps) {
+  const { size, camera, invalidate } = useThree();
   const groundRef = useRef<THREE.Mesh>(null);
   const pointerWorld = useRef<THREE.Vector3 | null>(null);
 
@@ -225,10 +227,8 @@ function Scene({ cubes, cols, rows, reduced, isMobile, rollRequestRef }: ScenePr
 
   // 稜線(細いインクの罫線)用の共有ジオメトリ/マテリアル。
   // 密に積まれても白キューブ同士の境界が消えないようにする(2D版の罫線美学の継承)
-  const edgesGeometry = useMemo(
-    () => new THREE.EdgesGeometry(new THREE.BoxGeometry(1, 1, 1)),
-    [],
-  );
+  const cubeGeometry = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
+  const edgesGeometry = useMemo(() => new THREE.EdgesGeometry(cubeGeometry), [cubeGeometry]);
   const edgesMaterial = useMemo(
     () =>
       new THREE.LineBasicMaterial({
@@ -242,8 +242,9 @@ function Scene({ cubes, cols, rows, reduced, isMobile, rollRequestRef }: ScenePr
     return () => {
       edgesGeometry.dispose();
       edgesMaterial.dispose();
+      cubeGeometry.dispose();
     };
-  }, [edgesGeometry, edgesMaterial]);
+  }, [cubeGeometry, edgesGeometry, edgesMaterial]);
 
   // 中心を基準にグリッドをセンタリングするオフセット
   const offsetX = (cols - 1) / 2;
@@ -345,6 +346,14 @@ function Scene({ cubes, cols, rows, reduced, isMobile, rollRequestRef }: ScenePr
     rollRequestRef.current = null;
   }, [rollRequestRef]);
 
+  useEffect(() => {
+    invalidateRef.current = invalidate;
+    invalidate();
+    return () => {
+      invalidateRef.current = null;
+    };
+  }, [invalidate, invalidateRef]);
+
   // ホバー解除後もグレーが減衰しきるまでは更新を続けるためのフラグ
   const colorsActiveRef = useRef(false);
 
@@ -436,11 +445,12 @@ function Scene({ cubes, cols, rows, reduced, isMobile, rollRequestRef }: ScenePr
 
       const mat = mesh.material as THREE.MeshStandardMaterial;
       const base = c.base === 0 ? CUBE_COLOR_WHITE : CUBE_COLOR_BLACK;
-      mat.color.copy(base).lerp(CUBE_COLOR_GRAY, anim.mixColor);
+      mat.color.copy(base).lerp(CUBE_COLOR_HOVER, anim.mixColor).lerp(CUBE_COLOR_GRAY, anim.mixColor * 0.25);
     }
 
     isAnimatingRef.current = anyAnimating;
     colorsActiveRef.current = maxMix > 0;
+    if (anyAnimating || pointerActive || colorsActiveRef.current) invalidate();
   });
 
   function dir_from_step(step: { fromX: number; fromZ: number; toX: number; toZ: number }): RollDir {
@@ -455,14 +465,17 @@ function Scene({ cubes, cols, rows, reduced, isMobile, rollRequestRef }: ScenePr
   const handlePointerMove = useCallback(
     (e: ThreeEvent<PointerEvent>) => {
       if (isMobile || reduced) return;
+      e.stopPropagation();
       pointerWorld.current = e.point.clone();
+      invalidate();
     },
-    [isMobile, reduced],
+    [invalidate, isMobile, reduced],
   );
 
   const handlePointerLeave = useCallback(() => {
     pointerWorld.current = null;
-  }, []);
+    invalidate();
+  }, [invalidate]);
 
   return (
     <>
@@ -471,10 +484,10 @@ function Scene({ cubes, cols, rows, reduced, isMobile, rollRequestRef }: ScenePr
       <hemisphereLight args={["#ffffff", "#c9c9c6", 0.5]} />
       <directionalLight
         position={[7, 14, 6]}
-        intensity={1.25}
-        castShadow
-        shadow-mapSize-width={isMobile ? 512 : 1024}
-        shadow-mapSize-height={isMobile ? 512 : 1024}
+        intensity={1.18}
+        castShadow={!isMobile}
+        shadow-mapSize-width={512}
+        shadow-mapSize-height={512}
         shadow-camera-left={-14}
         shadow-camera-right={14}
         shadow-camera-top={14}
@@ -500,15 +513,17 @@ function Scene({ cubes, cols, rows, reduced, isMobile, rollRequestRef }: ScenePr
       {cubes.map((c) => (
         <mesh
           key={c.id}
+          geometry={cubeGeometry}
           ref={(m) => {
             if (m) meshRefs.current.set(c.id, m);
             else meshRefs.current.delete(c.id);
           }}
           position={[c.i - offsetX, 0.5, c.j - offsetZ]}
-          castShadow
+          castShadow={!isMobile}
           receiveShadow
+          onPointerMove={handlePointerMove}
+          onPointerOut={handlePointerLeave}
         >
-          <boxGeometry args={[1, 1, 1]} />
           <meshStandardMaterial
             color={c.base === 0 ? "#eeeeea" : "#1a1a1e"}
             roughness={0.82}
@@ -548,9 +563,11 @@ export default function VoxelScene3D({ rollRef }: VoxelScene3DProps) {
   );
   const { cols, rows, cubes } = useMemo(() => buildGrid(isMobile), [isMobile]);
   const rollRequestRef = useRef<RollDir | null>(null);
+  const invalidateRef = useRef<(() => void) | null>(null);
 
   const performRoll = useCallback((dir: RollDir) => {
     rollRequestRef.current = dir;
+    invalidateRef.current?.();
     haptic([12, 40, 8]);
   }, []);
 
@@ -571,8 +588,9 @@ export default function VoxelScene3D({ rollRef }: VoxelScene3DProps) {
     <CanvasErrorBoundary fallback={<VoxelField />}>
       <Canvas
         gl={{ alpha: true, antialias: true }}
-        dpr={[1, 2]}
-        shadows
+        dpr={[1, 1.25]}
+        frameloop="demand"
+        shadows={!isMobile}
         orthographic
         camera={{ position: [10, 12, 10], zoom: 1, near: 0.1, far: 100 }}
         aria-hidden="true"
@@ -586,6 +604,7 @@ export default function VoxelScene3D({ rollRef }: VoxelScene3DProps) {
           reduced={reduced}
           isMobile={isMobile}
           rollRequestRef={rollRequestRef}
+          invalidateRef={invalidateRef}
         />
       </Canvas>
     </CanvasErrorBoundary>

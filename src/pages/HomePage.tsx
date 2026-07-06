@@ -1,4 +1,4 @@
-import { lazy, Suspense, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import type { CSSProperties, PointerEvent } from "react";
 import { Link } from "react-router-dom";
 import { VoxelField } from "../components/VoxelField";
@@ -17,21 +17,36 @@ export function HomePage() {
   usePageTitle("山根瑛之輔 Portfolio | 見え方とルールの試作");
   const { mode } = useViewMode();
   const rollRef = useRef<((dir: RollDir) => void) | null>(null);
+  const heroFrameRef = useRef<number | null>(null);
+  const heroPointerRef = useRef<{ element: HTMLElement; x: number; y: number } | null>(null);
 
   const moveHero = (e: PointerEvent<HTMLElement>) => {
     if (e.pointerType === "touch") return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
     const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-    e.currentTarget.style.setProperty("--hero-far-x", `${(-18 * x).toFixed(2)}px`);
-    e.currentTarget.style.setProperty("--hero-far-y", `${(-12 * y).toFixed(2)}px`);
-    e.currentTarget.style.setProperty("--hero-near-x", `${(12 * x).toFixed(2)}px`);
-    e.currentTarget.style.setProperty("--hero-near-y", `${(8 * y).toFixed(2)}px`);
-    e.currentTarget.style.setProperty("--hero-copy-x", `${(-6 * x).toFixed(2)}px`);
-    e.currentTarget.style.setProperty("--hero-copy-y", `${(-4 * y).toFixed(2)}px`);
+    heroPointerRef.current = { element: e.currentTarget, x, y };
+
+    if (heroFrameRef.current !== null) return;
+    heroFrameRef.current = requestAnimationFrame(() => {
+      const next = heroPointerRef.current;
+      heroFrameRef.current = null;
+      if (!next) return;
+      next.element.style.setProperty("--hero-far-x", `${(-18 * next.x).toFixed(2)}px`);
+      next.element.style.setProperty("--hero-far-y", `${(-12 * next.y).toFixed(2)}px`);
+      next.element.style.setProperty("--hero-near-x", `${(12 * next.x).toFixed(2)}px`);
+      next.element.style.setProperty("--hero-near-y", `${(8 * next.y).toFixed(2)}px`);
+      next.element.style.setProperty("--hero-copy-x", `${(-6 * next.x).toFixed(2)}px`);
+      next.element.style.setProperty("--hero-copy-y", `${(-4 * next.y).toFixed(2)}px`);
+    });
   };
 
   const resetHero = (e: PointerEvent<HTMLElement>) => {
+    heroPointerRef.current = null;
+    if (heroFrameRef.current !== null) {
+      cancelAnimationFrame(heroFrameRef.current);
+      heroFrameRef.current = null;
+    }
     e.currentTarget.style.setProperty("--hero-far-x", "0px");
     e.currentTarget.style.setProperty("--hero-far-y", "0px");
     e.currentTarget.style.setProperty("--hero-near-x", "0px");
@@ -39,6 +54,12 @@ export function HomePage() {
     e.currentTarget.style.setProperty("--hero-copy-x", "0px");
     e.currentTarget.style.setProperty("--hero-copy-y", "0px");
   };
+
+  useEffect(() => {
+    return () => {
+      if (heroFrameRef.current !== null) cancelAnimationFrame(heroFrameRef.current);
+    };
+  }, []);
 
   return (
     <section
@@ -59,9 +80,6 @@ export function HomePage() {
     >
       {/* 背景: カーソル/クリックに反応するボクセルフィールド。読ませつつ、作品の気配は消しすぎない。 */}
       <div className="absolute inset-0" aria-hidden="true">
-        <div className="hero-layer-far pointer-events-none absolute inset-0 opacity-[0.08] md:opacity-[0.04]">
-          <VoxelField />
-        </div>
         <div className="hero-layer-near absolute inset-0 opacity-100">
           <Suspense fallback={<VoxelField />}>
             <VoxelScene3D rollRef={rollRef} />

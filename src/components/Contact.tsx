@@ -22,7 +22,7 @@ export function Contact() {
               </p>
               <a
                 href={`mailto:${profile.email}`}
-                className="btn btn-invert mt-7"
+                className="btn btn-invert focus-invert mt-7"
                 aria-label={`${profile.email}へメールを送る`}
               >
                 メールで連絡する
@@ -40,7 +40,7 @@ export function Contact() {
                 <p className="spec-label mb-1.5">Email</p>
                 <a
                   href={`mailto:${profile.email}`}
-                  className="en nav-link text-anywhere text-base underline decoration-(--gray-4) underline-offset-4 transition-colors hover:decoration-(--paper)"
+                  className="en nav-link focus-invert text-anywhere text-base underline decoration-(--gray-4) underline-offset-4 transition-colors hover:decoration-(--paper)"
                 >
                   {profile.email}
                 </a>
@@ -55,7 +55,7 @@ export function Contact() {
                           href={link.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="nav-link underline underline-offset-4 hover:text-(--paper)"
+                          className="nav-link focus-invert underline underline-offset-4 hover:text-(--paper)"
                         >
                           {link.label}
                         </a>
@@ -74,7 +74,7 @@ export function Contact() {
 
         <footer className="mt-16 flex flex-wrap items-center justify-between gap-3 border-t border-(--gray-5) bg-[rgba(253,253,252,0.04)] px-4 py-5 text-xs text-(--gray-4)">
           <p className="en tracking-wider">© {new Date().getFullYear()} {profile.nameEn} — Perception as Interface</p>
-          <Link to="/" className="nav-link underline underline-offset-4 hover:text-(--paper)">
+          <Link to="/" className="nav-link focus-invert underline underline-offset-4 hover:text-(--paper)">
             ページの先頭へ ↑
           </Link>
         </footer>

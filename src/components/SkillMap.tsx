@@ -40,15 +40,15 @@ export function SkillMap() {
                   .filter((w) => w !== undefined);
                 const clickable = related.length > 0;
                 return (
-                  <li key={skill.name} className="flex min-h-11 items-center justify-between gap-3 py-2 text-sm">
+                  <li key={skill.name} className="flex min-h-11 min-w-0 flex-col items-start justify-between gap-1.5 py-2 text-sm sm:flex-row sm:items-center sm:gap-3">
                     {clickable ? (
                       <button
                         type="button"
                         onClick={() => jumpToWork(related[0].id)}
                         title={`関連作品: ${related.map((w) => w.title).join(" / ")}`}
-                        className="group flex items-center gap-1.5 text-left underline decoration-(--gray-3) underline-offset-4 transition-colors hover:decoration-(--ink)"
+                        className="group flex min-w-0 items-center gap-1.5 text-left underline decoration-(--gray-3) underline-offset-4 transition-colors hover:decoration-(--ink)"
                       >
-                        {skill.name}
+                        <span className="text-anywhere">{skill.name}</span>
                         <span
                           aria-hidden="true"
                           className="text-xs text-(--gray-4) transition-transform group-hover:translate-x-0.5"
@@ -57,7 +57,7 @@ export function SkillMap() {
                         </span>
                       </button>
                     ) : (
-                      <span>{skill.name}</span>
+                      <span className="text-anywhere">{skill.name}</span>
                     )}
                     <span className="en shrink-0 border border-(--line) bg-(--gray-1) px-2.5 py-0.5 text-[0.675rem] text-(--gray-5)">
                       {SKILL_LEVEL_LABELS[skill.level]}

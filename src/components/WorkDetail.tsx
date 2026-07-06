@@ -150,15 +150,15 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
             <div className="grid gap-4 p-5 pb-3 md:grid-cols-[1fr_auto] md:items-start md:p-6 md:pb-3">
               <div className="min-w-0">
                 <p className="spec-label mb-1.5">{work.category}</p>
-                <h3 id="work-detail-title" className="text-2xl font-bold tracking-wide break-words">
+                <h3 id="work-detail-title" className="text-anywhere text-2xl font-bold tracking-wide">
                   {work.title}
                   {work.titleEn && (
-                    <span className="en ml-2 inline-block text-sm font-normal text-(--gray-4)">
+                    <span className="en mt-1 block text-sm font-normal text-(--gray-4) sm:ml-2 sm:inline-block">
                       {work.titleEn}
                     </span>
                   )}
                 </h3>
-                <p id="work-detail-summary" className="mt-1 text-sm text-(--ink-soft)">
+                <p id="work-detail-summary" className="text-anywhere mt-1 text-sm text-(--ink-soft)">
                   {work.oneLiner}
                 </p>
               </div>
@@ -177,14 +177,13 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
             </div>
 
             {/* Perspective switch: 同じ作品を3つの視点で読み替える */}
-            <div className="px-5 pb-3 md:px-6" role="tablist" aria-label="作品を読む視点">
+            <div className="px-5 pb-3 md:px-6" role="group" aria-label="作品を読む視点">
               <div className="inline-flex max-w-full flex-wrap border border-(--line-strong) text-xs">
                 {lensKeys.map((key) => (
                   <button
                     key={key}
                     type="button"
-                    role="tab"
-                    aria-selected={lens === key}
+                    aria-pressed={lens === key}
                     onClick={() => {
                       haptic(6);
                       setLens(key);

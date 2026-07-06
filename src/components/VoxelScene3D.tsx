@@ -60,19 +60,66 @@ function rotateAroundAxis(v: THREE.Vector3, axis: THREE.Vector3, angle: number):
   return v.clone().applyAxisAngle(axis, angle);
 }
 
+const YA_GLYPHS = [
+  ["10001", "10001", "01010", "00100", "00100", "00100", "00100"],
+  ["0", "0", "0", "0", "0", "0", "1"],
+  ["01110", "10001", "10001", "11111", "10001", "10001", "10001"],
+  ["0", "0", "0", "0", "0", "0", "1"],
+];
+
+function logoCellKind(
+  i: number,
+  j: number,
+  cols: number,
+  rows: number,
+  scale: number,
+): "letter" | "logo-area" | "free" {
+  const glyphHeight = 7 * scale;
+  const gap = scale;
+  const totalWidth =
+    YA_GLYPHS.reduce((sum, glyph) => sum + glyph[0].length * scale, 0) +
+    gap * (YA_GLYPHS.length - 1);
+  const startX = Math.floor((cols - totalWidth) / 2);
+  const startY = Math.floor((rows - glyphHeight) / 2);
+
+  if (j < startY || j >= startY + glyphHeight || i < startX || i >= startX + totalWidth) {
+    return "free";
+  }
+
+  let cursor = startX;
+  for (const glyph of YA_GLYPHS) {
+    const glyphWidth = glyph[0].length * scale;
+    if (i >= cursor && i < cursor + glyphWidth) {
+      const localX = Math.floor((i - cursor) / scale);
+      const localY = Math.floor((j - startY) / scale);
+      return glyph[localY]?.[localX] === "1" ? "letter" : "logo-area";
+    }
+    cursor += glyphWidth;
+    if (i >= cursor && i < cursor + gap) return "logo-area";
+    cursor += gap;
+  }
+
+  return "logo-area";
+}
+
 function buildGrid(isMobile: boolean): { cols: number; rows: number; cubes: CubeData[] } {
-  const cols = isMobile ? 11 : 20;
-  const rows = isMobile ? 16 : 13;
-  const density = isMobile ? 0.24 : 0.42;
+  const scale = isMobile ? 1 : 2;
+  const cols = isMobile ? 17 : 30;
+  const rows = isMobile ? 13 : 15;
+  const fillerDensity = isMobile ? 0.22 : 0.3;
   const cubes: CubeData[] = [];
   let id = 0;
   for (let j = 0; j < rows; j++) {
     for (let i = 0; i < cols; i++) {
-      const r = rand(i, j);
-      if (r >= density) continue;
-      const r2 = rand(j * 31 + 7, i * 17 + 3);
-      const base: 0 | 1 = r2 > 0.82 ? 1 : 0;
-      cubes.push({ id: id++, i, j, base });
+      const kind = logoCellKind(i, j, cols, rows, scale);
+      if (kind === "letter") {
+        cubes.push({ id: id++, i, j, base: 1 });
+        continue;
+      }
+      if (kind === "logo-area") continue;
+
+      const r = rand(i * 5 + 11, j * 7 + 13);
+      if (r < fillerDensity) cubes.push({ id: id++, i, j, base: 0 });
     }
   }
   return { cols, rows, cubes };
@@ -213,16 +260,15 @@ function Scene({ cubes, cols, rows, reduced, isMobile, rollRequestRef }: ScenePr
     const hz = rows / 2 + 0.5;
     let maxX = 0;
     let maxY = 0;
-    // y=1.5はタンブル中の頂点高さ(√2/2 + 0.5√2 ≈ 1.41)を覆う
     for (const cx of [-hx, hx])
-      for (const cy of [0, 1.5])
+      for (const cy of [0, 1.7])
         for (const cz of [-hz, hz]) {
           const p = new THREE.Vector3(cx, cy, cz).applyMatrix4(toView);
           maxX = Math.max(maxX, Math.abs(p.x));
           maxY = Math.max(maxY, Math.abs(p.y));
         }
     const aspect = size.width / size.height;
-    const halfH = Math.max(maxY, maxX / aspect) * 1.06;
+    const halfH = Math.max(maxY, maxX / aspect) * 0.92;
     cam.top = halfH;
     cam.bottom = -halfH;
     cam.left = -halfH * aspect;
@@ -420,25 +466,37 @@ function Scene({ cubes, cols, rows, reduced, isMobile, rollRequestRef }: ScenePr
 
   return (
     <>
-      <ambientLight intensity={0.85} />
+      <fog attach="fog" args={["#fdfdfc", isMobile ? 18 : 22, isMobile ? 34 : 44]} />
+      <ambientLight intensity={0.55} />
+      <hemisphereLight args={["#ffffff", "#c9c9c6", 0.5]} />
       <directionalLight
-        position={[6, 12, 4]}
-        intensity={0.7}
+        position={[7, 14, 6]}
+        intensity={1.25}
         castShadow
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
+        shadow-mapSize-width={isMobile ? 512 : 1024}
+        shadow-mapSize-height={isMobile ? 512 : 1024}
+        shadow-camera-left={-14}
+        shadow-camera-right={14}
+        shadow-camera-top={14}
+        shadow-camera-bottom={-14}
+        shadow-bias={-0.0008}
       />
+      <directionalLight position={[-8, 7, -10]} intensity={0.32} />
       <mesh
         ref={groundRef}
         rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, 0, 0]}
+        position={[0, -0.02, 0]}
         receiveShadow
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
       >
         <planeGeometry args={[Math.max(cols, rows) * 3, Math.max(cols, rows) * 3]} />
-        <shadowMaterial opacity={0.12} transparent />
+        <shadowMaterial opacity={0.16} transparent />
       </mesh>
+      <gridHelper
+        args={[Math.max(cols, rows) * 1.8, Math.max(cols, rows), "#d6d6d2", "#ececea"]}
+        position={[0, 0.01, 0]}
+      />
       {cubes.map((c) => (
         <mesh
           key={c.id}
@@ -448,14 +506,14 @@ function Scene({ cubes, cols, rows, reduced, isMobile, rollRequestRef }: ScenePr
           }}
           position={[c.i - offsetX, 0.5, c.j - offsetZ]}
           castShadow
+          receiveShadow
         >
           <boxGeometry args={[1, 1, 1]} />
           <meshStandardMaterial
-            color={c.base === 0 ? "#fafafa" : "#1a1a1e"}
-            roughness={0.9}
-            metalness={0}
+            color={c.base === 0 ? "#eeeeea" : "#1a1a1e"}
+            roughness={0.82}
+            metalness={0.02}
           />
-          {/* 稜線: メッシュの子なのでタンブル(位置・回転)に追従する */}
           <lineSegments geometry={edgesGeometry} material={edgesMaterial} />
         </mesh>
       ))}

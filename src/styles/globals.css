@@ -76,6 +76,10 @@ body {
   border-radius: 1px;
 }
 
+.focus-invert:focus-visible {
+  outline-color: var(--paper);
+}
+
 h1,
 h2,
 h3,
@@ -136,8 +140,40 @@ a {
 }
 
 .text-anywhere {
+  max-width: 100%;
+  text-wrap: wrap;
   overflow-wrap: anywhere;
-  word-break: normal;
+  word-break: break-word;
+  line-break: anywhere;
+}
+
+/* ---------- Hero perspective ---------- */
+.hero-scene {
+  --hero-far-x: 0px;
+  --hero-far-y: 0px;
+  --hero-near-x: 0px;
+  --hero-near-y: 0px;
+  --hero-copy-x: 0px;
+  --hero-copy-y: 0px;
+}
+
+.hero-layer-far,
+.hero-layer-near,
+.hero-copy {
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.hero-layer-far {
+  transform: translate3d(var(--hero-far-x), var(--hero-far-y), 0) scale(1.03);
+}
+
+.hero-layer-near {
+  transform: translate3d(var(--hero-near-x), var(--hero-near-y), 0) scale(1.01);
+}
+
+.hero-copy {
+  transform: translate3d(var(--hero-copy-x), var(--hero-copy-y), 0);
 }
 
 /* ---------- Reveal on scroll ---------- */
@@ -155,6 +191,34 @@ a {
   transform: none;
 }
 
+/* ---------- Work focus stage ---------- */
+.works-stage {
+  position: relative;
+  isolation: isolate;
+}
+
+.works-stage::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--section-gap) * -0.18) -100vw calc(var(--section-gap) * -0.12);
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at var(--stage-x, 50%) var(--stage-y, 30%), rgba(253, 253, 252, 0.14), transparent 34rem),
+    rgba(17, 17, 19, 0.68);
+  opacity: 0;
+  transition: opacity 0.42s var(--ease);
+}
+
+.works-stage.is-focusing::before {
+  opacity: 1;
+}
+
+.works-stage > * {
+  position: relative;
+  z-index: 1;
+}
+
 /* ---------- Work card visual pattern layer ---------- */
 .work-visual {
   position: relative;
@@ -166,6 +230,38 @@ a {
 .work-card {
   position: relative;
   isolation: isolate;
+  transform:
+    perspective(1200px)
+    rotateX(var(--tilt-y, 0deg))
+    rotateY(var(--tilt-x, 0deg))
+    translate3d(0, 0, 0);
+  transform-style: preserve-3d;
+  transition:
+    opacity 0.34s var(--ease),
+    filter 0.34s var(--ease),
+    border-color 0.34s var(--ease),
+    box-shadow 0.34s var(--ease),
+    transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.work-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.work-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at var(--spot-x, 50%) var(--spot-y, 45%), rgba(255, 255, 255, 0.5), transparent 18rem),
+    linear-gradient(135deg, rgba(17, 17, 19, 0.04), transparent 42%);
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transition: opacity 0.34s var(--ease);
 }
 
 .work-card::after {
@@ -182,10 +278,36 @@ a {
 }
 
 .work-card:hover::after,
-.work-card:focus-within::after {
+.work-card:focus-within::after,
+.work-card.is-active::after {
   opacity: 1;
-  transform: translate(0.35rem, 0.35rem);
+  transform: translate(0.45rem, 0.45rem);
   border-color: var(--line);
+}
+
+.work-card:hover,
+.work-card:focus-within,
+.work-card.is-active {
+  transform:
+    perspective(1200px)
+    rotateX(var(--tilt-y, 0deg))
+    rotateY(var(--tilt-x, 0deg))
+    translate3d(0, -0.35rem, 2rem)
+    scale(1.018);
+  border-color: var(--ink);
+  box-shadow: 0 24px 70px rgba(17, 17, 19, 0.2);
+}
+
+.work-card:hover::before,
+.work-card:focus-within::before,
+.work-card.is-active::before {
+  opacity: 1;
+}
+
+.work-card.is-dimmed {
+  opacity: 0.34;
+  filter: grayscale(0.88) blur(0.7px);
+  transform: scale(0.985);
 }
 
 .media-reveal {
@@ -197,9 +319,10 @@ a {
 }
 
 .group:hover .media-reveal,
-.group:focus-within .media-reveal {
-  filter: saturate(1) contrast(1.04);
-  transform: scale(1.025);
+.group:focus-within .media-reveal,
+.work-card.is-active .media-reveal {
+  filter: saturate(1.08) contrast(1.06);
+  transform: scale(1.04);
 }
 
 /* ---------- Modal ---------- */
@@ -351,5 +474,23 @@ a {
 
   .reveal {
     transform: none;
+  }
+
+  .hero-layer-far,
+  .hero-layer-near,
+  .hero-copy,
+  .work-card,
+  .work-card:hover,
+  .work-card:focus-within,
+  .work-card.is-active,
+  .work-card.is-dimmed {
+    transform: none;
+    filter: none;
+  }
+
+  .works-stage::before,
+  .work-card::before,
+  .work-card::after {
+    opacity: 0;
   }
 }

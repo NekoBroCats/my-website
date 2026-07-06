@@ -12,14 +12,14 @@ export function AboutPage() {
     <div className="pt-14">
       {/* Binary → Gray のキーワード列: 端は白黒、中央はグレーに寄る */}
       <div className="container-site pt-10">
-        <ul className="flex flex-wrap gap-x-6 gap-y-2" aria-label="キーワード">
+        <ul className="grid grid-cols-2 gap-x-5 gap-y-2 sm:flex sm:flex-wrap sm:gap-x-6" aria-label="キーワード">
           {heroWords.map((word, i) => {
             const t = Math.abs(i - (heroWords.length - 1) / 2) / ((heroWords.length - 1) / 2);
             const shade = Math.round(140 - t * 118); // 中央=グレー、端=黒に近い
             return (
               <li
                 key={word}
-                className="spec-label"
+                className="spec-label text-anywhere"
                 style={{ color: `rgb(${shade},${shade},${shade})` }}
               >
                 {word}

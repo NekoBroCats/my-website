@@ -1,4 +1,5 @@
 import { lazy, Suspense, useRef } from "react";
+import type { CSSProperties, PointerEvent } from "react";
 import { Link } from "react-router-dom";
 import { VoxelField } from "../components/VoxelField";
 import type { RollDir } from "../components/VoxelScene3D";
@@ -13,33 +14,74 @@ const VoxelScene3D = lazy(() => import("../components/VoxelScene3D"));
  * 情報量はあえて絞り、仕掛け(転がしインタラクション)への導線だけを添える。
  */
 export function HomePage() {
-  usePageTitle("山根瑛之輔 Portfolio | Perception Designer / Prototype Creator");
+  usePageTitle("山根瑛之輔 Portfolio | 見え方とルールの試作");
   const { mode } = useViewMode();
   const rollRef = useRef<((dir: RollDir) => void) | null>(null);
 
+  const moveHero = (e: PointerEvent<HTMLElement>) => {
+    if (e.pointerType === "touch") return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    e.currentTarget.style.setProperty("--hero-far-x", `${(-18 * x).toFixed(2)}px`);
+    e.currentTarget.style.setProperty("--hero-far-y", `${(-12 * y).toFixed(2)}px`);
+    e.currentTarget.style.setProperty("--hero-near-x", `${(12 * x).toFixed(2)}px`);
+    e.currentTarget.style.setProperty("--hero-near-y", `${(8 * y).toFixed(2)}px`);
+    e.currentTarget.style.setProperty("--hero-copy-x", `${(-6 * x).toFixed(2)}px`);
+    e.currentTarget.style.setProperty("--hero-copy-y", `${(-4 * y).toFixed(2)}px`);
+  };
+
+  const resetHero = (e: PointerEvent<HTMLElement>) => {
+    e.currentTarget.style.setProperty("--hero-far-x", "0px");
+    e.currentTarget.style.setProperty("--hero-far-y", "0px");
+    e.currentTarget.style.setProperty("--hero-near-x", "0px");
+    e.currentTarget.style.setProperty("--hero-near-y", "0px");
+    e.currentTarget.style.setProperty("--hero-copy-x", "0px");
+    e.currentTarget.style.setProperty("--hero-copy-y", "0px");
+  };
+
   return (
-    <section id="top" className="relative flex min-h-svh flex-col justify-end overflow-hidden">
+    <section
+      id="top"
+      className="hero-scene relative flex min-h-svh flex-col justify-end overflow-hidden"
+      onPointerMove={moveHero}
+      onPointerLeave={resetHero}
+      style={
+        {
+          "--hero-far-x": "0px",
+          "--hero-far-y": "0px",
+          "--hero-near-x": "0px",
+          "--hero-near-y": "0px",
+          "--hero-copy-x": "0px",
+          "--hero-copy-y": "0px",
+        } as CSSProperties
+      }
+    >
       {/* 背景: カーソル/クリックに反応するボクセルフィールド。読ませつつ、作品の気配は消しすぎない。 */}
       <div className="absolute inset-0" aria-hidden="true">
-        <div className="pointer-events-none absolute inset-0 opacity-45 md:opacity-55">
+        <div className="hero-layer-far pointer-events-none absolute inset-0 opacity-[0.08] md:opacity-[0.04]">
           <VoxelField />
         </div>
-        <div className="absolute inset-0 opacity-100">
+        <div className="hero-layer-near absolute inset-0 opacity-100">
           <Suspense fallback={<VoxelField />}>
             <VoxelScene3D rollRef={rollRef} />
           </Suspense>
         </div>
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,var(--paper)_0%,rgba(253,253,252,0.92)_26%,rgba(253,253,252,0.42)_52%,transparent_78%)]" />
         {/* テキスト可読性のためのグラデーション(canvasへのクリックを妨げないようpointer-events無効) */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-(--paper) via-(--paper)/60 to-(--paper)/10" />
       </div>
 
-      <div className="container-site relative pt-28 pb-16 md:pb-20">
+      <div className="hero-copy container-site relative pt-28 pb-16 md:pb-20">
         <p className="spec-label mb-4">Portfolio — Perception as Interface</p>
         <h1 className="mb-2 text-5xl leading-tight font-bold tracking-wide md:text-7xl">
           {profile.name}
         </h1>
-        <p className="en mb-8 text-sm text-(--ink-soft) md:text-base">
-          {profile.title}
+        <p className="mb-8 text-sm text-(--ink-soft) md:text-base">
+          {profile.titleJa}
+          <span className="en ml-2 hidden text-xs text-(--gray-4) sm:inline md:text-sm">
+            / {profile.title}
+          </span>
         </p>
         <p className="serif max-w-2xl text-lg leading-loose md:text-xl">
           {profile.heroStatement[0]}

@@ -6,6 +6,7 @@ import { assetUrl } from "../lib/assetUrl";
 interface WorkMediaProps {
   work: Work;
   variant: "card" | "detail";
+  priority?: boolean;
 }
 
 /**
@@ -14,7 +15,7 @@ interface WorkMediaProps {
  * - card: 5:3 のトリミング表示(object-cover)
  * - detail: 全体が見えるレターボックス表示(object-contain)。ポスター等の縦位置にも対応
  */
-export function WorkMedia({ work, variant }: WorkMediaProps) {
+export function WorkMedia({ work, variant, priority = false }: WorkMediaProps) {
   const [failed, setFailed] = useState(false);
   const src = variant === "detail" ? (work.imageDetail ?? work.image) : work.image;
   const alt = work.imageAlt ?? `${work.title} — ${work.oneLiner}`;
@@ -27,7 +28,8 @@ export function WorkMedia({ work, variant }: WorkMediaProps) {
         <img
           src={assetUrl(src)}
           alt={alt}
-          loading="eager"
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : "auto"}
           decoding="async"
           className="media-reveal absolute inset-0 h-full w-full object-cover"
           onError={() => setFailed(true)}

@@ -54,8 +54,8 @@ export function Header() {
             className="flex items-baseline gap-2 text-sm font-bold tracking-wide"
           >
             {profile.name}
-            <span className="en hidden text-[0.625rem] font-normal text-(--gray-4) uppercase lg:inline">
-              {profile.title}
+            <span className="hidden text-[0.625rem] font-normal tracking-normal text-(--gray-4) lg:inline">
+              {profile.titleJa}
             </span>
           </Link>
           <div className="flex items-center gap-4">
@@ -107,7 +107,16 @@ export function Header() {
           headerはbackdrop-filterを持ち containing block を作るため、
           fixedオーバーレイはheaderの外(兄弟要素)に置いてビューポート基準で全画面化する */}
       {menuOpen && (
-        <div id="mobile-navigation" className="fixed inset-0 top-14 z-40 flex flex-col bg-(--paper) md:hidden">
+        <div
+          id="mobile-navigation"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="mobile-navigation-title"
+          className="fixed inset-0 top-14 z-40 flex flex-col bg-(--paper) md:hidden"
+        >
+          <h2 id="mobile-navigation-title" className="sr-only">
+            モバイルメニュー
+          </h2>
           <div className="container-site flex justify-end pt-5">
             <button
               ref={menuCloseRef}

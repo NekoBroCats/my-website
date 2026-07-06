@@ -19,7 +19,7 @@ export function SkillMap() {
   return (
     <section id="skills" className="container-site" style={{ paddingBlock: "var(--section-gap)" }}>
       <SectionHeader
-        index="03"
+        index="04"
         en="Skills / Tools"
         ja="スキル"
         quickSummary="紙に書く。形にする。Unityで動かす。また紙に戻る。作っている途中でよく行き来する道具です。"

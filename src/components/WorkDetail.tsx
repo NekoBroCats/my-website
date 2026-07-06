@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import type { LensKey, Work } from "../types";
 import { LENS_LABELS } from "../types";
 import { WorkMedia } from "./WorkMedia";
@@ -7,9 +8,11 @@ import { GravityBoard } from "./GravityBoard";
 import { IllusionDemo } from "./IllusionDemo";
 import { haptic } from "../lib/haptics";
 import { useBodyScrollLock } from "../hooks/useBodyScrollLock";
+import type { LaunchRect } from "./WorkCard";
 
 interface WorkDetailProps {
   work: Work;
+  launchRect?: LaunchRect | null;
   onClose: () => void;
 }
 
@@ -35,7 +38,7 @@ function getFocusableElements(root: HTMLElement) {
  * 作品詳細モーダル。
  * 本人が制作を振り返る文章として読めるよう、見出しも説明調に寄せすぎない。
  */
-export function WorkDetail({ work, onClose }: WorkDetailProps) {
+export function WorkDetail({ work, launchRect = null, onClose }: WorkDetailProps) {
   const [lens, setLens] = useState<LensKey>("thought");
   const closeRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -132,6 +135,17 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
     { label: "次にやるなら", en: "09 Next development", body: <p>{work.detail.next}</p> },
   ];
 
+  const launchStyle = launchRect
+    ? ({
+        "--detail-origin-x": `${launchRect.left + launchRect.width / 2 - window.innerWidth / 2}px`,
+        "--detail-origin-y": `${launchRect.top + launchRect.height / 2 - window.innerHeight / 2}px`,
+        "--detail-origin-scale": Math.max(
+          0.58,
+          Math.min(0.92, launchRect.width / Math.min(window.innerWidth * 0.9, 896)),
+        ).toFixed(3),
+      } as CSSProperties)
+    : undefined;
+
   return (
     <>
       <div className="modal-backdrop" onClick={onClose} aria-hidden="true" />
@@ -143,7 +157,10 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
           aria-labelledby="work-detail-title"
           aria-describedby="work-detail-summary"
           tabIndex={-1}
-          className="modal-enter max-h-[92svh] w-full max-w-4xl overflow-y-auto border border-(--line-strong) bg-(--paper) md:max-h-[86svh]"
+          style={launchStyle}
+          className={`modal-enter ${
+            launchRect ? "modal-enter-from-card" : ""
+          } max-h-[92svh] w-full max-w-4xl overflow-y-auto border border-(--line-strong) bg-(--paper) md:max-h-[86svh]`}
         >
           {/* ヘッダー */}
           <div className="sticky top-0 z-10 border-b border-(--line) bg-(--paper)/95 backdrop-blur-sm">
@@ -201,7 +218,7 @@ export function WorkDetail({ work, onClose }: WorkDetailProps) {
             </div>
           </div>
 
-          <div className="p-5 md:p-6">
+          <div className="modal-body p-5 md:p-6">
             {/* 基本情報(役割・期間・形態)。未入力の項目は表示しない */}
             {work.meta && (work.meta.role || work.meta.period || work.meta.format) && (
               <div className="mb-8 flex flex-wrap gap-x-8 gap-y-2 border-y border-(--line) py-3">

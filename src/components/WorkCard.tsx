@@ -1,5 +1,5 @@
-import { useState } from "react";
-import type { CSSProperties, FocusEvent, PointerEvent } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { CSSProperties, FocusEvent, MouseEvent, PointerEvent } from "react";
 import type { Work } from "../types";
 import { WorkMedia } from "./WorkMedia";
 import { useViewMode } from "../context/ViewModeContext";
@@ -7,9 +7,16 @@ import { useReveal } from "../hooks/useReveal";
 import { haptic } from "../lib/haptics";
 import { hashTargetId } from "../lib/hashTarget";
 
+export interface LaunchRect {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+}
+
 interface WorkCardProps {
   work: Work;
-  onOpen: (work: Work) => void;
+  onOpen: (work: Work, origin: LaunchRect | null) => void;
   /** 一覧の先頭で大きく見せる代表作カード(横型レイアウト) */
   featured?: boolean;
   /** グリッド内の入場順。スクロール時にわずかなstaggerを付ける */
@@ -32,8 +39,12 @@ export function WorkCard({
   // ハッシュジャンプ(/works#work-{id})の着地先カードは、reveal待ちにせず最初から表示する。
   // マウント時に一度だけ判定し、後のハッシュ変化で表示が消えないよう固定する
   const [isHashTarget] = useState(() => hashTargetId(window.location.hash) === `work-${work.id}`);
-  const ref = useReveal<HTMLElement>(isHashTarget);
-  const revealClass = isHashTarget ? "reveal is-visible" : "reveal";
+  const [isWorksPage] = useState(() => window.location.pathname.endsWith("/works"));
+  const shouldRevealImmediately = isHashTarget || isWorksPage;
+  const ref = useReveal<HTMLElement>(shouldRevealImmediately);
+  const launchTimerRef = useRef<number | null>(null);
+  const [isLaunching, setIsLaunching] = useState(false);
+  const revealClass = shouldRevealImmediately ? "reveal is-visible" : "reveal";
   const revealStyle = {
     "--reveal-index": Math.min(order, 8),
     "--spot-x": "50%",
@@ -42,11 +53,40 @@ export function WorkCard({
     "--tilt-y": "0deg",
   } as CSSProperties;
 
-  const motionStateClass = `${isActive ? "is-active" : ""} ${isDimmed ? "is-dimmed" : ""}`;
+  const motionStateClass = `${isActive ? "is-active" : ""} ${isDimmed ? "is-dimmed" : ""} ${
+    isLaunching ? "is-launching" : ""
+  }`;
 
-  const openWork = () => {
+  useEffect(() => {
+    return () => {
+      if (launchTimerRef.current !== null) {
+        window.clearTimeout(launchTimerRef.current);
+      }
+    };
+  }, []);
+
+  const openWork = (e: MouseEvent<HTMLButtonElement>) => {
     haptic(8);
-    onOpen(work);
+    onFocusChange?.(work.id);
+    setIsLaunching(true);
+    const card = e.currentTarget.closest<HTMLElement>(".work-card");
+    const rect = card?.getBoundingClientRect();
+    const origin = rect
+      ? {
+          left: rect.left,
+          top: rect.top,
+          width: rect.width,
+          height: rect.height,
+        }
+      : null;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    launchTimerRef.current = window.setTimeout(
+      () => {
+        onOpen(work, origin);
+        setIsLaunching(false);
+      },
+      prefersReducedMotion ? 0 : 150,
+    );
   };
 
   const focusCard = () => onFocusChange?.(work.id);
@@ -152,7 +192,9 @@ export function WorkCard({
               type="button"
               aria-label={`${work.title}のケーススタディを読む`}
               onClick={openWork}
-              className="btn btn-solid w-full md:w-auto"
+              aria-busy={isLaunching}
+              disabled={isLaunching}
+              className="case-study-cta btn btn-solid w-full md:w-auto"
             >
               ケーススタディを読む →
             </button>
@@ -205,7 +247,9 @@ export function WorkCard({
             type="button"
             aria-label={`${work.title}のケーススタディを読む`}
             onClick={openWork}
-            className="btn btn-ghost w-full"
+            aria-busy={isLaunching}
+            disabled={isLaunching}
+            className="case-study-cta btn btn-ghost w-full"
           >
             ケーススタディを読む →
           </button>

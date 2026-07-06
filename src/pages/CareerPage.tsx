@@ -1,4 +1,5 @@
 import { SkillMap } from "../components/SkillMap";
+import { CareerTimeline } from "../components/CareerTimeline";
 import { CareerFit } from "../components/CareerFit";
 import { usePageTitle } from "../hooks/usePageTitle";
 
@@ -8,6 +9,7 @@ export function CareerPage() {
 
   return (
     <div className="pt-14">
+      <CareerTimeline />
       <SkillMap />
       <CareerFit />
     </div>

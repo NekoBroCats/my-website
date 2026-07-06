@@ -195,6 +195,8 @@ a {
 .works-stage {
   position: relative;
   isolation: isolate;
+  --stage-x: 50%;
+  --stage-y: 30%;
 }
 
 .works-stage::before {
@@ -204,7 +206,7 @@ a {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at var(--stage-x, 50%) var(--stage-y, 30%), rgba(253, 253, 252, 0.14), transparent 34rem),
+    radial-gradient(circle at var(--stage-x) var(--stage-y), rgba(253, 253, 252, 0.18), transparent 28rem),
     rgba(17, 17, 19, 0.68);
   opacity: 0;
   transition: opacity 0.42s var(--ease);
@@ -230,6 +232,7 @@ a {
 .work-card {
   position: relative;
   isolation: isolate;
+  z-index: 1;
   transform:
     perspective(1200px)
     rotateX(var(--tilt-y, 0deg))
@@ -247,14 +250,14 @@ a {
 
 .work-card > * {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .work-card::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
   background:
     radial-gradient(circle at var(--spot-x, 50%) var(--spot-y, 45%), rgba(255, 255, 255, 0.5), transparent 18rem),
@@ -265,48 +268,52 @@ a {
 }
 
 .work-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border: 1px solid transparent;
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    opacity 0.35s var(--ease),
-    transform 0.35s var(--ease);
+  content: none;
 }
 
 .work-card:hover::after,
 .work-card:focus-within::after,
 .work-card.is-active::after {
-  opacity: 1;
-  transform: translate(0.45rem, 0.45rem);
-  border-color: var(--line);
+  content: none;
 }
 
 .work-card:hover,
 .work-card:focus-within,
 .work-card.is-active {
+  z-index: 3;
   transform:
     perspective(1200px)
     rotateX(var(--tilt-y, 0deg))
     rotateY(var(--tilt-x, 0deg))
-    translate3d(0, -0.35rem, 2rem)
+    translate3d(0, -0.35rem, 0)
     scale(1.018);
   border-color: var(--ink);
   box-shadow: 0 24px 70px rgba(17, 17, 19, 0.2);
 }
 
+.work-card.is-launching {
+  z-index: 4;
+  transform:
+    perspective(1200px)
+    rotateX(var(--tilt-y, 0deg))
+    rotateY(var(--tilt-x, 0deg))
+    translate3d(0, -0.55rem, 0)
+    scale(1.026);
+  border-color: var(--ink);
+  box-shadow: 0 34px 90px rgba(17, 17, 19, 0.26);
+}
+
 .work-card:hover::before,
 .work-card:focus-within::before,
-.work-card.is-active::before {
+.work-card.is-active::before,
+.work-card.is-launching::before {
   opacity: 1;
 }
 
 .work-card.is-dimmed {
-  opacity: 0.34;
-  filter: grayscale(0.88) blur(0.7px);
+  z-index: 1;
+  opacity: 0.5;
+  filter: grayscale(0.7) blur(0.35px);
   transform: scale(0.985);
 }
 
@@ -332,6 +339,7 @@ a {
   background: rgba(17, 17, 19, 0.5);
   backdrop-filter: blur(2px);
   z-index: 60;
+  animation: modal-backdrop-in 0.24s var(--ease) both;
 }
 
 .modal-panel {
@@ -349,8 +357,37 @@ a {
 }
 
 .modal-enter {
+  position: relative;
   animation: modal-enter 0.32s var(--ease) both;
   transform-origin: 50% 100%;
+}
+
+.modal-enter::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.76), transparent 15rem),
+    linear-gradient(115deg, transparent 0 36%, rgba(255, 255, 255, 0.42) 44%, transparent 54%);
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  animation: modal-sheen 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.modal-enter > * {
+  position: relative;
+  z-index: 2;
+}
+
+.modal-enter-from-card {
+  animation: modal-enter-from-card 0.48s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: 50% 50%;
+}
+
+.modal-enter-from-card .modal-body {
+  animation: modal-body-rise 0.42s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
 }
 
 @media (min-width: 768px) {
@@ -408,6 +445,36 @@ a {
 .btn:focus-visible {
   outline-offset: 4px;
 }
+
+.case-study-cta {
+  position: relative;
+  overflow: hidden;
+}
+
+.case-study-cta::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 0 32%, rgba(253, 253, 252, 0.42) 48%, transparent 64%);
+  opacity: 0;
+  transform: translateX(-120%);
+}
+
+.case-study-cta:hover::after,
+.case-study-cta:focus-visible::after,
+.case-study-cta[aria-busy="true"]::after {
+  opacity: 1;
+  transform: translateX(120%);
+  transition:
+    opacity 0.18s var(--ease),
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.case-study-cta[aria-busy="true"] {
+  cursor: wait;
+  transform: translateY(1px) scale(0.985);
+}
 .btn-solid {
   background: var(--ink);
   color: var(--paper);
@@ -458,6 +525,58 @@ a {
   }
 }
 
+@keyframes modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-enter-from-card {
+  0% {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translate3d(var(--detail-origin-x, 0), var(--detail-origin-y, 18px), 0)
+      scale(var(--detail-origin-scale, 0.86));
+  }
+  55% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    filter: none;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes modal-body-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modal-sheen {
+  0% {
+    opacity: 0;
+    transform: translateX(-12%);
+  }
+  34% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(18%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -483,7 +602,8 @@ a {
   .work-card:hover,
   .work-card:focus-within,
   .work-card.is-active,
-  .work-card.is-dimmed {
+  .work-card.is-dimmed,
+  .work-card.is-launching {
     transform: none;
     filter: none;
   }

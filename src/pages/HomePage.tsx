@@ -14,7 +14,7 @@ const VoxelScene3D = lazy(() => import("../components/VoxelScene3D"));
  * 情報量はあえて絞り、仕掛け(転がしインタラクション)への導線だけを添える。
  */
 export function HomePage() {
-  usePageTitle("山根瑛之輔 Portfolio | 見え方とルールの試作");
+  usePageTitle("山根瑛之輔 Portfolio | 見え方とルールの作品制作");
   const { mode } = useViewMode();
   const rollRef = useRef<((dir: RollDir) => void) | null>(null);
   const heroFrameRef = useRef<number | null>(null);

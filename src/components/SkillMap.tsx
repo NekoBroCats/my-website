@@ -22,7 +22,7 @@ export function SkillMap() {
         index="04"
         en="Skills / Tools"
         ja="スキル"
-        quickSummary="紙に書く。形にする。Unityで動かす。また紙に戻る。作っている途中でよく行き来する道具です。"
+        quickSummary="紙に書く。形にする。Unityで動かす。また紙に戻る。作品として詰めるために、よく行き来する道具です。"
       />
 
       <div ref={ref} className="reveal grid gap-px overflow-hidden border border-(--line) bg-(--line) md:grid-cols-2">

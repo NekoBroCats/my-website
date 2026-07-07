@@ -114,7 +114,7 @@ export function WorkDetail({ work, launchRect = null, onClose }: WorkDetailProps
     },
     {
       label: "作り方",
-      en: "06 Prototype / Implementation",
+      en: "06 Build / Implementation",
       body: <p>{work.detail.implementation}</p>,
     },
     { label: "やってみて分かったこと", en: "07 Outcome", body: <p>{work.detail.outcome}</p> },

@@ -29,11 +29,11 @@ export const processSteps: ProcessStep[] = [
     ],
   },
   {
-    id: "prototype",
-    en: "Prototype",
-    ja: "試作する",
+    id: "build",
+    en: "Build",
+    ja: "形にする",
     description:
-      "紙でも、アクリルでも、Unityでも。一回外に出す。頭の中では成立していても、手で持つとだめなことがある。",
+      "紙でも、アクリルでも、Unityでも。見える場所に出す。頭の中では成立していても、手で持つとだめなことがある。",
     glyph: [
       { x: 0, y: 2, tone: "black" },
       { x: 1, y: 2, tone: "black" },

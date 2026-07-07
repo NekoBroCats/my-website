@@ -2,7 +2,7 @@ import { About } from "../components/About";
 import { ProcessTimeline } from "../components/ProcessTimeline";
 import { usePageTitle } from "../hooks/usePageTitle";
 
-const heroWords = ["Binary", "Gray", "Perspective", "Play", "Prototype"];
+const heroWords = ["Binary", "Gray", "Perspective", "Play", "Build"];
 
 /** 考えていることとプロセス。旧HeroのbinaryWords列をここに移植する。 */
 export function AboutPage() {

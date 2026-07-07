@@ -82,14 +82,14 @@ export interface Work {
 
 export type SkillLevel =
   | "can-design-with"
-  | "can-prototype"
+  | "can-build"
   | "can-use"
   | "can-explain"
   | "learning";
 
 export const SKILL_LEVEL_LABELS: Record<SkillLevel, string> = {
   "can-design-with": "よく使う",
-  "can-prototype": "手を動かせる",
+  "can-build": "手を動かせる",
   "can-use": "必要なら使う",
   "can-explain": "話せる",
   learning: "触っている",

@@ -18,7 +18,7 @@ export function Contact() {
                 カタチに。
               </p>
               <p className="mt-4 max-w-md text-sm leading-loose text-(--gray-3)">
-                商品や作品の話や、実物やプロトタイプの魅せ方。必要なところから話しませんか。
+                商品や作品の話や、実物や制作物の魅せ方。必要なところから話しませんか。
               </p>
               <a
                 href={`mailto:${profile.email}`}

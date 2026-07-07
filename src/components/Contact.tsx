@@ -18,7 +18,7 @@ export function Contact() {
                 カタチに。
               </p>
               <p className="mt-4 max-w-md text-sm leading-loose text-(--gray-3)">
-                作品の細かい話。実物プロトタイプの見せ方。VRChat / Unityで何を試したか。必要なところから話せます。
+                商品や作品の話や、実物やプロトタイプの魅せ方。必要なところから話しませんか。
               </p>
               <a
                 href={`mailto:${profile.email}`}

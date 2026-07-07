@@ -66,7 +66,7 @@ export function About() {
           ))}
           {mode === "quick" && (
             <p className="text-xs text-(--gray-4)">
-              ※ 「ちゃんと読む」に切り替えると、もう少し回り道して話します。
+              ※ 「ちゃんと読む」に切り替えると、詳細な説明が出ます。
             </p>
           )}
         </div>

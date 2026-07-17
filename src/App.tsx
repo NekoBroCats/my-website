@@ -1,10 +1,11 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { ViewModeProvider } from "./context/ViewModeContext";
 import { Layout } from "./components/Layout";
 import { HomePage } from "./pages/HomePage";
 import { AboutPage } from "./pages/AboutPage";
 import { WorksPage } from "./pages/WorksPage";
 import { CareerPage } from "./pages/CareerPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 export default function App() {
   return (
@@ -21,7 +22,7 @@ export default function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/works" element={<WorksPage />} />
           <Route path="/career" element={<CareerPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </ViewModeProvider>

@@ -40,6 +40,7 @@ function getFocusableElements(root: HTMLElement) {
  */
 export function WorkDetail({ work, launchRect = null, onClose }: WorkDetailProps) {
   const [lens, setLens] = useState<LensKey>("thought");
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "failed">("idle");
   const closeRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   useBodyScrollLock(true);
@@ -146,6 +147,16 @@ export function WorkDetail({ work, launchRect = null, onClose }: WorkDetailProps
       } as CSSProperties)
     : undefined;
 
+  const copyLink = async () => {
+    haptic(6);
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopyStatus("copied");
+    } catch {
+      setCopyStatus("failed");
+    }
+  };
+
   return (
     <>
       <div className="modal-backdrop" onClick={onClose} aria-hidden="true" />
@@ -179,18 +190,32 @@ export function WorkDetail({ work, launchRect = null, onClose }: WorkDetailProps
                   {work.oneLiner}
                 </p>
               </div>
-              <button
-                ref={closeRef}
-                type="button"
-                onClick={() => {
-                  haptic(6);
-                  onClose();
-                }}
-                aria-label="詳細を閉じる"
-                className="btn btn-ghost h-9 shrink-0 justify-self-start px-3 py-1.5 md:justify-self-end"
-              >
-                閉じる
-              </button>
+              <div className="flex flex-wrap gap-2 md:justify-self-end">
+                <button
+                  type="button"
+                  onClick={copyLink}
+                  className="btn btn-ghost h-9 shrink-0 px-3 py-1.5"
+                  aria-live="polite"
+                >
+                  {copyStatus === "copied"
+                    ? "コピーしました"
+                    : copyStatus === "failed"
+                      ? "コピーできませんでした"
+                      : "リンクをコピー"}
+                </button>
+                <button
+                  ref={closeRef}
+                  type="button"
+                  onClick={() => {
+                    haptic(6);
+                    onClose();
+                  }}
+                  aria-label="詳細を閉じる"
+                  className="btn btn-ghost h-9 shrink-0 px-3 py-1.5"
+                >
+                  閉じる
+                </button>
+              </div>
             </div>
 
             {/* Perspective switch: 同じ作品を3つの視点で読み替える */}

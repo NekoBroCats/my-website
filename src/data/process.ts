@@ -6,7 +6,7 @@ export const processSteps: ProcessStep[] = [
     en: "Observe",
     ja: "観察する",
     description:
-      "まず、引っかかったところを置いておく。盤面を回したら読めない。色が同じに見えない。小さいズレから始まります。",
+      "まず、引っかかったところを置いておく。盤面を回すと読めない。色も同じに見えない。そういう小さなズレから始まります。",
     glyph: [
       { x: 1, y: 1, tone: "black" },
       { x: 0, y: 0, tone: "white" },
@@ -20,7 +20,7 @@ export const processSteps: ProcessStep[] = [
     en: "Reframe",
     ja: "問い直す",
     description:
-      "すぐ答えを出さない。前提を一個だけ動かす。重力の向き。見る距離。置く順番。大きなテーマより、その一個を見る。",
+      "すぐ答えを出さない。前提を一つだけ動かす。重力の向き。見る距離。置く順番。大きなテーマより、まずその一個を見る。",
     glyph: [
       { x: 0, y: 1, tone: "black" },
       { x: 1, y: 0, tone: "gray" },
@@ -47,7 +47,7 @@ export const processSteps: ProcessStep[] = [
     en: "Test",
     ja: "試してもらう",
     description:
-      "人に渡す。変な遊ばれ方を見る。説明通りに遊ばれなかったところは、次に直す場所。",
+      "人に渡す。変な遊ばれ方を見る。説明どおりに遊ばれなかったところは、次に直す場所。",
     glyph: [
       { x: 0, y: 0, tone: "black" },
       { x: 0, y: 1, tone: "black" },

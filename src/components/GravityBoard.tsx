@@ -129,9 +129,9 @@ export function GravityBoard() {
         ))}
       </div>
       <p className="mt-3 text-xs leading-relaxed text-(--gray-5)">
-        盤面の前提(重力)が変わると、同じ駒でも配置が変わる。
+        同じ駒でも、重力を回すと並びが変わります。
         <br />
-        VOXEL ROW / YONもくの中核にある考え方です。
+        さっきの読みが、そのままでは使えない。VOXEL ROWでは、その読み直しをルールにしました。
       </p>
     </div>
   );

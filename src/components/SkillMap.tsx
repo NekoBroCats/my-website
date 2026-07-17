@@ -22,7 +22,7 @@ export function SkillMap() {
         index="04"
         en="Skills / Tools"
         ja="スキル"
-        quickSummary="紙に書く。形にする。Unityで動かす。また紙に戻る。作品として詰めるために、よく行き来する道具です。"
+        quickSummary="紙に書く。形にする。Unityで動かす。必要なら、また紙に戻る。道具は違っても、完成まで行き来します。"
       />
 
       <div ref={ref} className="reveal grid gap-px overflow-hidden border border-(--line) bg-(--line) md:grid-cols-2">
@@ -71,7 +71,7 @@ export function SkillMap() {
       </div>
 
       <p className="mt-4 text-xs leading-relaxed text-(--gray-4)">
-        ラベルは自己申告のメモです。↗ が付いたものは、実際に使った作品まで飛べます。
+        ラベルは自己申告です。↗ が付いた道具は、実際に使った作品から確認できます。
       </p>
     </section>
   );

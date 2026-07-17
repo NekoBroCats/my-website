@@ -5,7 +5,7 @@ export const skillCategories: SkillCategory[] = [
     id: "planning",
     title: "考えはじめるところ",
     titleEn: "Planning / Concept",
-    description: "最初からきれいな企画書にはしません。引っかかったところを、まず遊べる作品の形まで持っていけるか見る。",
+    description: "最初からきれいな企画書にはしない。引っかかったところを拾い、遊べる作品の芯にします。",
     skills: [
       { name: "違和感を拾う", level: "can-design-with", relatedWorkIds: ["voxel-row-yonmoku", "moodorgan"] },
       { name: "問いを言い直す", level: "can-design-with", relatedWorkIds: ["voxel-row-yonmoku", "illusion-cards"] },
@@ -33,7 +33,7 @@ export const skillCategories: SkillCategory[] = [
     id: "technical",
     title: "動かすところ",
     titleEn: "Technical",
-    description: "誰かに渡す前に、自分で動く形まで作る。そのための道具です。",
+    description: "誰かに渡す前に、自分で形にして動かす。そのために覚えた道具です。",
     skills: [
       { name: "Unity", level: "can-build", relatedWorkIds: ["unity-technical", "vr-spatial-ui"] },
       { name: "C#", level: "can-build", relatedWorkIds: ["unity-technical"] },

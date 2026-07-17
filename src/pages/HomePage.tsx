@@ -1,21 +1,21 @@
-import { lazy, Suspense, useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import type { CSSProperties, PointerEvent } from "react";
 import { Link } from "react-router-dom";
-import { VoxelField } from "../components/VoxelField";
 import type { RollDir } from "../components/VoxelScene3D";
 import { profile } from "../data/profile";
 import { useViewMode } from "../context/ViewModeContext";
 import { usePageTitle } from "../hooks/usePageTitle";
+import { ObservationIndex } from "../components/ObservationIndex";
 
 const VoxelScene3D = lazy(() => import("../components/VoxelScene3D"));
 
 /**
- * 第一印象のページ。名前を覚えさせ、ボクセルフィールドで遊ばせ、Works/Careerへ送る。
- * 情報量はあえて絞り、仕掛け(転がしインタラクション)への導線だけを添える。
+ * 第一印象のページ。名前とボクセルの仕掛けを見せたあと、作品の起点になった観察へつなぐ。
  */
 export function HomePage() {
   usePageTitle("山根瑛之輔 Portfolio | 見え方とルールの作品制作");
   const { mode } = useViewMode();
+  const [show3D, setShow3D] = useState(false);
   const rollRef = useRef<((dir: RollDir) => void) | null>(null);
   const heroFrameRef = useRef<number | null>(null);
   const heroPointerRef = useRef<{ element: HTMLElement; x: number; y: number } | null>(null);
@@ -61,8 +61,14 @@ export function HomePage() {
     };
   }, []);
 
+  useEffect(() => {
+    const timer = window.setTimeout(() => setShow3D(true), 250);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   return (
-    <section
+    <>
+      <section
       id="top"
       className="hero-scene relative flex min-h-svh flex-col justify-end overflow-hidden"
       onPointerMove={moveHero}
@@ -77,13 +83,15 @@ export function HomePage() {
           "--hero-copy-y": "0px",
         } as CSSProperties
       }
-    >
+      >
       {/* 背景: カーソル/クリックに反応するボクセルフィールド。読ませつつ、作品の気配は消しすぎない。 */}
       <div className="absolute inset-0" aria-hidden="true">
         <div className="hero-layer-near absolute inset-0 opacity-100">
-          <Suspense fallback={<VoxelField />}>
-            <VoxelScene3D rollRef={rollRef} />
-          </Suspense>
+          {show3D ? (
+            <Suspense fallback={null}>
+              <VoxelScene3D rollRef={rollRef} />
+            </Suspense>
+          ) : null}
         </div>
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,var(--paper)_0%,rgba(253,253,252,0.92)_26%,rgba(253,253,252,0.42)_52%,transparent_78%)]" />
         {/* テキスト可読性のためのグラデーション(canvasへのクリックを妨げないようpointer-events無効) */}
@@ -149,19 +157,19 @@ export function HomePage() {
         {mode === "quick" && (
           <dl className="caption-box mt-10 grid max-w-3xl overflow-hidden gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
             <div className="min-w-0">
-              <dt className="spec-label mb-1.5">Who</dt>
+              <dt className="spec-label mb-1.5">Starting Point</dt>
               <dd className="text-anywhere leading-relaxed">{profile.quickScan.person}</dd>
             </div>
             <div className="min-w-0">
-              <dt className="spec-label mb-1.5">Representative Works</dt>
+              <dt className="spec-label mb-1.5">Works</dt>
               <dd className="text-anywhere leading-relaxed">{profile.quickScan.representative}</dd>
             </div>
             <div className="min-w-0">
-              <dt className="spec-label mb-1.5">Tech</dt>
+              <dt className="spec-label mb-1.5">Tools / Materials</dt>
               <dd className="text-anywhere leading-relaxed">{profile.quickScan.tech}</dd>
             </div>
             <div className="min-w-0">
-              <dt className="spec-label mb-1.5">Target Fields</dt>
+              <dt className="spec-label mb-1.5">Fields</dt>
               <dd className="text-anywhere leading-relaxed">{profile.quickScan.target}</dd>
             </div>
           </dl>
@@ -179,6 +187,8 @@ export function HomePage() {
           </Link>
         </div>
       </div>
-    </section>
+      </section>
+      <ObservationIndex />
+    </>
   );
 }

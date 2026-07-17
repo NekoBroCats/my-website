@@ -50,8 +50,8 @@ export function IllusionDemo() {
 
       <p className="mt-3 text-xs leading-relaxed text-(--gray-5)" aria-live="polite">
         {revealed
-          ? "2つの円は同じ色でした。あなたの知覚は、周囲の文脈に書き換えられていました。"
-          : "2つの円、どちらが明るく見えますか?"}
+          ? "2つの円は同じ色です。ストライプを戻すと、たぶんまた違って見えます。"
+          : "2つの円、どちらが明るく見えますか？"}
       </p>
     </div>
   );

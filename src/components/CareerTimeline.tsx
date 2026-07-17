@@ -12,7 +12,7 @@ export function CareerTimeline() {
         index="03"
         en="Career Timeline"
         ja="経歴"
-        quickSummary="どこで何を作ってきたか。大学、展示、研究、仕事が少しずつ重なって、今の作り方になっています。"
+        quickSummary="大学で作り始め、展示に出しました。研究と仕事では、人が作る場を支える側にも回りました。そのたび、自分の作り方も少しずつ変わっています。"
       />
 
       <div ref={introRef} className="reveal mb-10 grid gap-6 border border-(--line-strong) bg-(--paper) p-5 md:grid-cols-[1fr_13rem] md:p-7">

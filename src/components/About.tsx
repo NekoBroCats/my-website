@@ -34,9 +34,9 @@ export function About() {
               </p>
             </div>
           </div>
-          <p className="serif text-[2rem] leading-snug font-semibold md:text-4xl">
-            <span className="block whitespace-nowrap">白か黒かで</span>
-            <span className="block whitespace-nowrap">終わらないところ。</span>
+          <p className="serif text-[1.75rem] leading-snug font-semibold sm:text-[2rem] md:text-4xl">
+            <span className="block">白か黒かで</span>
+            <span className="block">終わらないところ。</span>
           </p>
           <ul className="mt-8 grid grid-cols-2 border-y border-(--line) text-sm md:grid-cols-4" aria-label="制作プロセスのキーワード">
             {profile.statement.keywords.map((kw, i) => (

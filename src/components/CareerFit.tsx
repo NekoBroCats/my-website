@@ -13,7 +13,7 @@ export function CareerFit() {
         index="05"
         en="Career Fit / What I Can Do"
         ja="仕事での活かし方"
-        quickSummary="まだふわっとした話を、紙、模型、Unityのどれかで一回試せるところまで持っていきます。"
+        quickSummary="まだふわっとした話でも、紙、模型、Unityから合う方法を選び、人に見せて伝わる作品へ仕上げます。"
       />
 
       <div ref={ref} className="reveal space-y-10">
@@ -28,7 +28,7 @@ export function CareerFit() {
               連絡する
             </a>
             <Link to="/works" className="btn btn-ghost">
-              作品で確認する
+              作品を見る
             </Link>
           </div>
         </div>
@@ -37,7 +37,7 @@ export function CareerFit() {
           {/* 向いている領域 */}
           <div>
             <h3 className="mb-4 flex items-baseline gap-3 text-lg font-bold">
-              向いている領域
+              関われる領域
               <span className="spec-label">Fields</span>
             </h3>
             <ul className="flex flex-wrap gap-2">
@@ -55,7 +55,7 @@ export function CareerFit() {
           {/* 果たせる役割 */}
           <div>
             <h3 className="mb-4 flex items-baseline gap-3 text-lg font-bold">
-              果たせる役割
+              できること
               <span className="spec-label">Roles</span>
             </h3>
             <ul className="grid gap-px overflow-hidden border border-(--line) bg-(--line) sm:grid-cols-2">

@@ -2,15 +2,15 @@ import { About } from "../components/About";
 import { ProcessTimeline } from "../components/ProcessTimeline";
 import { usePageTitle } from "../hooks/usePageTitle";
 
-const heroWords = ["Binary", "Gray", "Perspective", "Play", "Build"];
+const heroWords = ["盤面", "見え方", "空間", "遊び", "実装"];
 
-/** 考えていることとプロセス。旧HeroのbinaryWords列をここに移植する。 */
+/** 考えていることとプロセス。入口には制作を支える具体語を置く。 */
 export function AboutPage() {
   usePageTitle("考えていることとプロセス | 山根瑛之輔 Portfolio");
 
   return (
     <div className="pt-14">
-      {/* Binary → Gray のキーワード列: 端は白黒、中央はグレーに寄る */}
+      {/* 端は白黒、中央はグレーに寄るキーワード列 */}
       <div className="container-site pt-10">
         <ul className="grid grid-cols-2 gap-x-5 gap-y-2 sm:flex sm:flex-wrap sm:gap-x-6" aria-label="キーワード">
           {heroWords.map((word, i) => {

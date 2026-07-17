@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { PointerEvent } from "react";
+import { useSearchParams } from "react-router-dom";
 import { SectionHeader } from "./SectionHeader";
 import { WorkCard } from "./WorkCard";
 import type { LaunchRect } from "./WorkCard";
@@ -7,14 +8,11 @@ import { WorkDetail } from "./WorkDetail";
 import { works } from "../data/works";
 import type { Work } from "../types";
 
-interface DetailLaunch {
-  work: Work;
-  origin: LaunchRect | null;
-}
-
 export function WorksSection() {
-  const [openWork, setOpenWork] = useState<DetailLaunch | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [launchOrigin, setLaunchOrigin] = useState<LaunchRect | null>(null);
   const [focusedWorkId, setFocusedWorkId] = useState<string | null>(null);
+  const selectedWork = works.find((work) => work.id === searchParams.get("work")) ?? null;
 
   // 代表作(featured=trueの先頭1件)はグリッドの上に横型カードで表示し、グリッドからは除外する
   const featuredWork = works.find((work) => work.featured);
@@ -33,7 +31,24 @@ export function WorksSection() {
   };
 
   const openDetail = (work: Work, origin: LaunchRect | null) => {
-    setOpenWork({ work, origin });
+    setLaunchOrigin(origin);
+    setSearchParams((current) => {
+      const next = new URLSearchParams(current);
+      next.set("work", work.id);
+      return next;
+    });
+  };
+
+  const closeDetail = () => {
+    setLaunchOrigin(null);
+    setSearchParams(
+      (current) => {
+        const next = new URLSearchParams(current);
+        next.delete("work");
+        return next;
+      },
+      { replace: true },
+    );
   };
 
   return (
@@ -80,11 +95,11 @@ export function WorksSection() {
         </div>
       </div>
 
-      {openWork && (
+      {selectedWork && (
         <WorkDetail
-          work={openWork.work}
-          launchRect={openWork.origin}
-          onClose={() => setOpenWork(null)}
+          work={selectedWork}
+          launchRect={launchOrigin}
+          onClose={closeDetail}
         />
       )}
     </section>

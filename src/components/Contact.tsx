@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
 import { profile } from "../data/profile";
 import { useReveal } from "../hooks/useReveal";
 
 export function Contact() {
   const ref = useReveal<HTMLDivElement>();
+  const publicLinks = profile.links.filter((link) => link.href);
 
   return (
     <section id="contact" className="border-t border-(--line) bg-(--ink) text-(--paper)">
@@ -18,7 +18,7 @@ export function Contact() {
                 カタチに。
               </p>
               <p className="mt-4 max-w-md text-sm leading-loose text-(--gray-3)">
-                商品や作品の話や、実物や制作物の魅せ方。必要なところから話しませんか。
+                商品や作品のこと。実物をどう見せるか。必要なところから話しませんか。
               </p>
               <a
                 href={`mailto:${profile.email}`}
@@ -45,14 +45,14 @@ export function Contact() {
                   {profile.email}
                 </a>
               </div>
-              <div>
-                <p className="spec-label mb-1.5">Links</p>
-                <ul className="space-y-1 text-sm text-(--gray-3)">
-                  {profile.links.map((link) =>
-                    link.href ? (
+              {publicLinks.length > 0 && (
+                <div>
+                  <p className="spec-label mb-1.5">Links</p>
+                  <ul className="space-y-1 text-sm text-(--gray-3)">
+                    {publicLinks.map((link) => (
                       <li key={link.label}>
                         <a
-                          href={link.href}
+                          href={link.href ?? undefined}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="nav-link focus-invert underline underline-offset-4 hover:text-(--paper)"
@@ -60,23 +60,19 @@ export function Contact() {
                           {link.label}
                         </a>
                       </li>
-                    ) : (
-                      <li key={link.label}>
-                        {link.label} <span className="text-(--gray-4)">— {link.note}</span>
-                      </li>
-                    ),
-                  )}
-                </ul>
-              </div>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         <footer className="mt-16 flex flex-wrap items-center justify-between gap-3 border-t border-(--gray-5) bg-[rgba(253,253,252,0.04)] px-4 py-5 text-xs text-(--gray-4)">
           <p className="en tracking-wider">© {new Date().getFullYear()} {profile.nameEn} — Perception as Interface</p>
-          <Link to="/" className="nav-link focus-invert underline underline-offset-4 hover:text-(--paper)">
+          <a href="#main" className="nav-link focus-invert underline underline-offset-4 hover:text-(--paper)">
             ページの先頭へ ↑
-          </Link>
+          </a>
         </footer>
       </div>
     </section>
